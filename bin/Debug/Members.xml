@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <Member>
+    <id>0</id>
+    <name>Rudi Völler</name>
+    <teamid>1</teamid>
+    <role>Trainer</role>
+  </Member>
+  <Member>
+    <id>1</id>
+    <name>Lukas Podolski</name>
+    <teamid>1</teamid>
+    <role>Trainer</role>
+  </Member>
+  <Member>
+    <id>2</id>
+    <name>Berti Vogts</name>
+    <teamid>0</teamid>
+    <role>Trainer</role>
+  </Member>
+  <Member>
+    <id>3</id>
+    <name>a</name>
+    <teamid>1</teamid>
+    <role>Trainer</role>
+  </Member>
+  <Member>
+    <id>4</id>
+    <name>d</name>
+    <teamid>17</teamid>
+    <role>Trainer</role>
+  </Member>
+</root>

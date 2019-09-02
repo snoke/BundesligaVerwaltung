@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <Team>
+    <id>0</id>
+    <name>RB Leipzig</name>
+  </Team>
+  <Team>
+    <id>1</id>
+    <name>FC Bayern München</name>
+  </Team>
+  <Team>
+    <id>2</id>
+    <name>VfL Wolfsburg</name>
+  </Team>
+  <Team>
+    <id>3</id>
+    <name>Bayer 04 Leverkusen</name>
+  </Team>
+  <Team>
+    <id>4</id>
+    <name>Borussia Dortmund</name>
+  </Team>
+  <Team>
+    <id>5</id>
+    <name>Sport-Club Freiburg</name>
+  </Team>
+  <Team>
+    <id>6</id>
+    <name>Eintracht Frankfurt</name>
+  </Team>
+  <Team>
+    <id>7</id>
+    <name>Borussia Mönchengladbach</name>
+  </Team>
+  <Team>
+    <id>8</id>
+    <name>FC Schalke 04</name>
+  </Team>
+  <Team>
+    <id>9</id>
+    <name>TSG 1899 Hoffenheim</name>
+  </Team>
+  <Team>
+    <id>10</id>
+    <name>1. FC Union Berlin</name>
+  </Team>
+  <Team>
+    <id>11</id>
+    <name>Fortuna Düsseldorf</name>
+  </Team>
+  <Team>
+    <id>12</id>
+    <name>SV Werder Bremen</name>
+  </Team>
+  <Team>
+    <id>13</id>
+    <name>1. FC Köln</name>
+  </Team>
+  <Team>
+    <id>14</id>
+    <name>SC Paderborn 07</name>
+  </Team>
+  <Team>
+    <id>15</id>
+    <name>FC Augsburg</name>
+  </Team>
+  <Team>
+    <id>16</id>
+    <name>Hertha BSC</name>
+  </Team>
+  <Team>
+    <id>17</id>
+    <name>1. FSV Mainz 05</name>
+  </Team>
+</root>
