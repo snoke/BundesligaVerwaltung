@@ -31,12 +31,12 @@ namespace BundesligaVerwaltung.Model
 		#endregion
 		
 		#region workers
-		public  List<string[]> GetKeys() {
+		public virtual  List<string[]> GetKeys() {
 			List<string[]> keys = new List<string[]>();
 			keys.Add(new string[]{"id","INTEGER"});
 			return keys;
 		}
-		public List<object> GetValues() {
+		public virtual List<object> GetValues() {
 			List<object> values = new List<object>();
 			values.Add(this.id);
 			return values;

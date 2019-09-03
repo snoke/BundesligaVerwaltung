@@ -28,7 +28,6 @@ namespace BundesligaVerwaltung.Model
 		#region constructors
 		public Match(int id, int teamId, int opponentId,int score,int opponentScore):base(id)
 		{
-			this.id = id;
 			this.teamId = teamId;
 			this.opponentId = opponentId;
 			this.score = score;
@@ -37,7 +36,6 @@ namespace BundesligaVerwaltung.Model
 		
 		public Match(List<object> row) :base(row)
 		{
-			this.id = Int32.Parse(row[0].ToString());
 			this.teamId = Int32.Parse(row[1].ToString());
 			this.opponentId = Int32.Parse(row[2].ToString());
 			this.score = Int32.Parse(row[3].ToString());

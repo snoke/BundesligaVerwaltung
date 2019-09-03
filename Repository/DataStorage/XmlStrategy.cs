@@ -69,7 +69,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 			}
 			XDocument xdoc = new XDocument();
 			xdoc.Add(root);
-			xdoc.Save(name+".xml");´
+			xdoc.Save(name+".xml");
 		}
 		public override void SaveEntity(Entity entity) {
 			XElement root = new XElement("root");

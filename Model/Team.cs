@@ -17,11 +17,9 @@ namespace BundesligaVerwaltung.Model
 		public List<Match> Matches = new List<Match>();
 
 		public Team(List<object> row):base(row) {
-			this.id = Int32.Parse(row[0].ToString());
 			this.name = (string) row[1];
 		}
 		public Team(int id, string name):base(id) {
-			this.id = id;
 			this.name = name;
 		}
 		public string GetName() {

@@ -61,7 +61,7 @@ namespace BundesligaVerwaltung.Controller
 	    }
     	    
     	
-    	public DefaultController() {
+    	public TestController() {
     		//this.Repository = new EntityRepository(new XmlStrategy());
     		this.Repository = new EntityRepository(new SQLiteStrategy());
     		this.Terminal = new Terminal();

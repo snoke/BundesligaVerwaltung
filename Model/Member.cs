@@ -25,14 +25,12 @@ namespace BundesligaVerwaltung.Model
 		
 		#region constructors
 		public Member(int id, string name,int teamid):base(id){
-			this.id = id;
 			this.name = name;
 			this.teamid = teamid;
 		}
 		
 		public Member(List<object> row):base(row)
 		{
-			this.id = Int32.Parse(row[0].ToString());
 			this.name = (string) row[1];
 			this.teamid = Int32.Parse(row[2].ToString());
 			this.role = (string) row[3];

@@ -62,9 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\TestController.cs" />
-    <Compile Include="Controller\MatchController.cs" />
-    <Compile Include="Controller\MemberController.cs" />
-    <Compile Include="Controller\TeamController.cs" />
     <Compile Include="lib\mySelectMenu\Controller\SelectMenu.cs" />
     <Compile Include="lib\mySelectMenu\Languages\English.cs" />
     <Compile Include="lib\mySelectMenu\Languages\German.cs" />
