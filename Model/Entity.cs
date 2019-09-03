@@ -21,22 +21,22 @@ namespace BundesligaVerwaltung.Model
 		#endregion
 		
 		#region constructors
-			public Entity(List<object> row) {
-				this.id = Int32.Parse(row[0].ToString());
+			public Entity(int id) {
+				this.id = id;
 			}
 		
-			public Entity()
-			{
+			public Entity(List<object> row) {
+				this.id = Int32.Parse(row[0].ToString());
 			}
 		#endregion
 		
 		#region workers
-		public  virtual List<string[]> GetKeys() {
+		public  List<string[]> GetKeys() {
 			List<string[]> keys = new List<string[]>();
 			keys.Add(new string[]{"id","INTEGER"});
 			return keys;
 		}
-		public virtual List<object> GetValues() {
+		public List<object> GetValues() {
 			List<object> values = new List<object>();
 			values.Add(this.id);
 			return values;

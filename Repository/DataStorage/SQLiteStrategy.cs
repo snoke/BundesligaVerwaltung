@@ -61,36 +61,42 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 			return rows;
 		}
 		
+		public override void SaveEntity(Entity e) {
+			string sql = "REPLACE INTO " +e.GetType().Name+"(";
+			List<string[]> keys = e.GetKeys();
+			foreach(string[] k in keys) {
+				sql +=  k[0] + ",";
+			}
+			sql = sql.Substring(0,sql.Length-1) + ") VALUES(";
+			int i = 0;
+			foreach(object v in e.GetValues()) {
+				if (keys[i][1]=="STRING") {
+					sql += "'" + v.ToString() + "',";
+				} else {
+					sql += v.ToString() + ",";
+				}
+				i++;
+			}
+			sql = sql.Substring(0,sql.Length-1) + ");";
+			this.query(sql);
+		}
 		
-		public override void SaveEntities(Entity[] entities) {
+		public  void SaveEntities(Entity[] entities) {
 			foreach(Entity e in entities) {
-				string sql = "REPLACE INTO " +e.GetType().Name+"(";
-				List<string[]> keys = e.GetKeys();
-				foreach(string[] k in keys) {
-					sql +=  k[0] + ",";
-				}
-				sql = sql.Substring(0,sql.Length-1) + ") VALUES(";
-				int i = 0;
-				foreach(object v in e.GetValues()) {
-					if (keys[i][1]=="STRING") {
-						sql += "'" + v.ToString() + "',";
-					} else {
-						sql += v.ToString() + ",";
-					}
-					i++;
-				}
-				sql = sql.Substring(0,sql.Length-1) + ");";
-				this.query(sql);
+				this.SaveEntity(e);
 			}
 		}
 		
 		public override List<Entity> LoadEntities(Type entityType) {
+			
 			List<Entity> list = new List<Entity>();
 			foreach(List<object> row in  this.query("SELECT * FROM "+entityType.Name+";")) {
-				var obj = Activator.CreateInstance(entityType,row);
-				list.Add((Entity) obj);
+				list.Add((Entity) Activator.CreateInstance(entityType,row));
 			}
-			return list;
+			return list.OrderBy(x => x.id).ToList();
+		}
+		public override void RemoveEntity(Entity entity) {
+			this.query("DELETE FROM "+entity.GetType().Name+" WHERE id="+entity.id+";");
 		}
 		#endregion
 	}

@@ -61,7 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\DefaultController.cs" />
+    <Compile Include="Controller\TestController.cs" />
     <Compile Include="Controller\MatchController.cs" />
     <Compile Include="Controller\MemberController.cs" />
     <Compile Include="Controller\TeamController.cs" />

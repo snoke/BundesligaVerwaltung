@@ -8,46 +8,39 @@
  */
 using System;
 using BundesligaVerwaltung.Model;
-using BundesligaVerwaltung.Repository.DataStorage;
-using BundesligaVerwaltung.Model.Members;
-using System.Xml.Linq;
 using System.Linq;
 using System.Collections.Generic;
-using System.Data.SQLite;
 
 namespace BundesligaVerwaltung.Repository
 {
 	public class EntityRepository
 	{
 		#region properties
-		DataStorage.DataStorage dataStorage;
+		DataStorage.DataStorage _dataStorage;
 		#endregion
 		
 		#region accessors
+		DataStorage.DataStorage dataStorage {
+			get { return this._dataStorage; }
+			set { this._dataStorage = value; }
+		}
 		#endregion
 		
 		#region constructors
 		public EntityRepository(DataStorage.DataStorage dataStorage)
 		{
 			this.dataStorage = dataStorage;
-			
-			
-			//dbConnection.ChangePassword("myPassword");
-			//dbConnection.ChangePassword(String.Empty);
 		}
 		#endregion
 		
 		#region workers
-//		private void execute(string sql) {
-//			SQLiteCommand Command = new SQLiteCommand(sql, this.dbConnection);
-//			Command.ExecuteNonQuery();
-//			Command.Dispose();
-//		}
-		
 		public  void SaveTeams(List<Team> elements) {
 			
 		}
 		public  void SaveMatches(List<Match> elements) {
+			foreach(Match element in elements) {
+				this.dataStorage.SaveEntity(element);
+			}
 			
 		}
 		public  void SaveMembers(List<Member> elements) {
@@ -61,7 +54,6 @@ namespace BundesligaVerwaltung.Repository
 			return matches;
 		}
 		
-		
 		public  List<Team> LoadTeams() {
 			List<Match> matches = this.LoadMatches().ToList();
 			List<Team> teams = new List<Team>();
@@ -71,7 +63,6 @@ namespace BundesligaVerwaltung.Repository
 			}
 			return teams;
 		}
-		
 		
 		public  List<Member> LoadMembers() {
 			List<Member> members = new List<Member>();

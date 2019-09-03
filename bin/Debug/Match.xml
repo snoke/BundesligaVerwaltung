@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <Match>
+    <id>0</id>
+    <teamid>0</teamid>
+    <opponentscore>1</opponentscore>
+    <score>5</score>
+    <opponentid>4</opponentid>
+  </Match>
+  <Match>
+    <id>1</id>
+    <teamid>2</teamid>
+    <opponentscore>3</opponentscore>
+    <score>2</score>
+    <opponentid>3</opponentid>
+  </Match>
+  <Match>
+    <id>2</id>
+    <teamid>4</teamid>
+    <opponentscore>0</opponentscore>
+    <score>9</score>
+    <opponentid>9</opponentid>
+  </Match>
+  <Match>
+    <id>3</id>
+    <teamid>5</teamid>
+    <opponentscore>1</opponentscore>
+    <score>2</score>
+    <opponentid>6</opponentid>
+  </Match>
+</root>

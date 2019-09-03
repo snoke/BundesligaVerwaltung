@@ -24,13 +24,13 @@ namespace BundesligaVerwaltung.Model
 		#endregion
 		
 		#region constructors
-		public Member(int id, string name,int teamid){
+		public Member(int id, string name,int teamid):base(id){
 			this.id = id;
 			this.name = name;
 			this.teamid = teamid;
 		}
 		
-		public Member(List<object> row)
+		public Member(List<object> row):base(row)
 		{
 			this.id = Int32.Parse(row[0].ToString());
 			this.name = (string) row[1];

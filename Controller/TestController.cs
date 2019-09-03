@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 namespace BundesligaVerwaltung.Controller
 {
-    class DefaultController
+    class TestController
     {
     	private EntityRepository Repository;
     	private Terminal Terminal;
@@ -62,7 +62,7 @@ namespace BundesligaVerwaltung.Controller
     	    
     	
     	public DefaultController() {
-    		//this.Repository = new XmlRepository();
+    		//this.Repository = new EntityRepository(new XmlStrategy());
     		this.Repository = new EntityRepository(new SQLiteStrategy());
     		this.Terminal = new Terminal();
     	}

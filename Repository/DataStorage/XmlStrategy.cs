@@ -38,20 +38,25 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		}
 		
 		
-		
 		public override List<Entity> LoadEntities(Type entityType) {
 			XDocument document = XDocument.Load(entityType.Name + ".xml");
 			List<Entity> entities = new List<Entity>();
 			foreach(XElement element in document.Root.Elements(entityType.Name)) {
-				entities.Add(new Entity(XElementToList(element)));
+				entities.Add((Entity) Activator.CreateInstance(entityType,XElementToList(element)));
 			}
-			return entities;
+			return entities.OrderBy(x => x.id).ToList();
 		}
 		
-		
-		public override void SaveEntities(Entity[] entities) {
+		public override void RemoveEntity(Entity entity) {
 			XElement root = new XElement("root");
-			string name="Entity";
+			string name = entity.GetType().Name;
+			List<Entity> entities = this.LoadEntities(entity.GetType()).Where(x=> x.id != entity.id).ToList();
+			this.SaveList(entities);
+		}
+		
+		private void SaveList(List<Entity> entities) {
+			XElement root = new XElement("root");
+			string name = "Entity";
 			foreach(Entity entity in entities) {
 				name = entity.GetType().Name;
 				XElement e = new XElement(name);
@@ -62,10 +67,16 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 				}
 				root.Add(e);
 			}
-			
 			XDocument xdoc = new XDocument();
 			xdoc.Add(root);
-			xdoc.Save(name+".xml");
+			xdoc.Save(name+".xml");´
+		}
+		public override void SaveEntity(Entity entity) {
+			XElement root = new XElement("root");
+			string name = entity.GetType().Name;
+			List<Entity> entities = this.LoadEntities(entity.GetType()).Where(x=> x.id != entity.id).ToList();
+			entities.Add(entity);
+			this.SaveList(entities);
 		}
 		#endregion
 	}
