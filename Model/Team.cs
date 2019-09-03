@@ -9,16 +9,16 @@ using System.Xml.Linq;
 using BundesligaVerwaltung.Model;
 namespace BundesligaVerwaltung.Model
 {
-	public class Team
+	public class Team:Entity
     {    	
 		public const int MAXIMUM_PARTICIPANTS = 18;
 		
-		public int id;
 		public string name;
 		public List<Match> Matches = new List<Match>();
-		public Team(XElement element) {
-			Int32.TryParse(element.Element("id").Value, out this.id );
-			this.name = element.Element("name").Value;
+
+		public Team(List<object> row) {
+			this.id = Int32.Parse(row[0].ToString());
+			this.name = (string) row[1];
 		}
 		public Team(int id, string name) {
 			this.id = id;
@@ -53,6 +53,17 @@ namespace BundesligaVerwaltung.Model
 		public int GetPoints() {
 			//List<Match> matches =  this.Matches.Where(x => (x.teamId == this.id) || (x.opponentId == this.id)).ToList();
 			return this.GetDraws().Count() + 3 * this.GetWins().Count();
+		}
+		public override List<string[]> GetKeys() {
+			List<string[]> keys =base.GetKeys();
+			keys.Add(new string[]{"name","STRING"});
+			return keys;
+		}
+		
+		public override List<object> GetValues() {
+			List<object> values = base.GetValues();
+			values.Add(this.name);
+			return values;
 		}
     }
 }

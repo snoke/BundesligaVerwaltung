@@ -8,6 +8,7 @@
  */
 using System.Xml.Linq;
 using System;
+using System.Collections.Generic;
 using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Model.Members
@@ -21,10 +22,10 @@ namespace BundesligaVerwaltung.Model.Members
 		#endregion
 		
 		#region constructors
-		public Physio(XElement element):base(element) {
-		}		
 		public Physio(int id, string name,int teamid):base( id,  name, teamid) {
 		}
+		public Physio(List<object> row):base(row) {
+		}		
 		#endregion
 		
 		#region workers

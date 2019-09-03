@@ -11,3 +11,16 @@ C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\EntityFramework.SqlS
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\System.Data.SQLite.xml
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\obj\Debug\BundesligaVerwaltung.exe
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\obj\Debug\BundesligaVerwaltung.pdb
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\obj\Debug\BundesligaVerwaltung.csprojResolveAssemblyReference.cache
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\BundesligaVerwaltung.exe.config
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\BundesligaVerwaltung.exe
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\BundesligaVerwaltung.pdb
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\EntityFramework.dll
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\System.Data.SQLite.dll
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\EntityFramework.xml
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\bin\Debug\System.Data.SQLite.xml
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\obj\Debug\BundesligaVerwaltung.exe
+C:\Users\Stefan\Downloads\BundesligaVerwaltung-master\BundesligaVerwaltung-master\obj\Debug\BundesligaVerwaltung.pdb

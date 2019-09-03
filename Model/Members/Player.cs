@@ -8,6 +8,7 @@
  */
 using System.Xml.Linq;
 using System;
+using System.Collections.Generic;
 using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Model.Members
@@ -21,9 +22,8 @@ namespace BundesligaVerwaltung.Model.Members
 		#endregion
 		
 		#region constructors
-		public Player(XElement element):base(element) {
+		public Player(List<object> row):base(row) {
 		}		
-		
 		public Player(int id, string name,int teamid):base( id,  name, teamid) {
 		}
 		#endregion

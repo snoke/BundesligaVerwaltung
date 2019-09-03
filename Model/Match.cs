@@ -8,14 +8,14 @@
  */
 using System;
 using System.Xml;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace BundesligaVerwaltung.Model
 {
-	public class Match
+	public class Match:Entity
 	{
 		#region properties
-		public int id;
 		public int teamId;
 		public int opponentId;
 		public int score;
@@ -34,18 +34,40 @@ namespace BundesligaVerwaltung.Model
 			this.score = score;
 			this.opponentScore = opponentScore;
 		}
-
-		public Match(XElement element) {
-			Int32.TryParse(element.Element("id").Value, out this.id );
-			Int32.TryParse(element.Element("teamid").Value, out this.teamId );
-			Int32.TryParse(element.Element("opponentid").Value, out this.opponentId );
-			Int32.TryParse(element.Element("score").Value, out this.score );
-			Int32.TryParse(element.Element("opponentscore").Value, out this.opponentScore );
+		
+		public Match(List<object> row) {
 			
+			this.id = Int32.Parse(row[0].ToString());
+		//	this.id = (int) Int32.Parse( (string) row[0]);
+			this.teamId = Int32.Parse(row[1].ToString());
+		//	this.teamId = (int) Int32.Parse( (string) row[1]);
+			this.opponentId = Int32.Parse(row[2].ToString());
+		//	this.opponentId = (int) Int32.Parse( (string) row[2]);
+			this.score = Int32.Parse(row[3].ToString());
+		//	this.score = (int) Int32.Parse( (string) row[3]);
+			this.opponentScore = Int32.Parse(row[4].ToString());
+		//	this.opponentScore = (int) Int32.Parse( (string) row[4]);
 		}
 		#endregion
 		
 		#region workers
+		public override List<string[]> GetKeys() {
+			List<string[]> keys =base.GetKeys();
+			keys.Add(new string[]{"teamid","INTEGER"});
+			keys.Add(new string[]{"opponentscore","INTEGER"});
+			keys.Add(new string[]{"score","INTEGER"});
+			keys.Add(new string[]{"opponentid","INTEGER"});
+			return keys;
+		}
+		
+		public override List<object> GetValues() {
+			List<object> values = base.GetValues();
+			values.Add(this.teamId);
+			values.Add(this.opponentScore);
+			values.Add(this.score);
+			values.Add(this.opponentId);
+			return values;
+		}
 		#endregion
 	}
 }

@@ -8,35 +8,54 @@
  */
 using System;
 using System.Xml.Linq;
+using System.Linq;
+using System.Collections.Generic;
 namespace BundesligaVerwaltung.Model
 {
-	public abstract class Member
+	public class Member:Entity
 	{
 		#region properties
-		public int id;
 		public string name;
 		public int teamid;
+		public string role;
 		#endregion
 		
 		#region accessors
 		#endregion
 		
 		#region constructors
-		
 		public Member(int id, string name,int teamid){
 			this.id = id;
 			this.name = name;
 			this.teamid = teamid;
 		}
-		public Member(XElement element)
+		
+		public Member(List<object> row)
 		{
-			Int32.TryParse(element.Element("id").Value, out this.id );
-			this.name = element.Element("name").Value;
-			Int32.TryParse(element.Element("teamid").Value, out this.teamid );
+			this.id = (int) Int32.Parse( (string) row[0]);
+			this.name = (string) row[1];
+			this.teamid = (int) Int32.Parse( (string) row[2]);
+			this.role = (string) row[3];
 		}
 		#endregion
 		
 		#region workers
+		
+		public override List<string[]> GetKeys() {
+			List<string[]> keys =base.GetKeys();
+			keys.Add(new string[]{"name","STRING"});
+			keys.Add(new string[]{"teamid","INTEGER"});
+			keys.Add(new string[]{"role","STRING"});
+			return keys;
+		}
+		
+		public override  List<object> GetValues() {
+			List<object> values = base.GetValues();
+			values.Add(this.name);
+			values.Add(this.teamid);
+			values.Add(this.role);
+			return values;
+		}
 		#endregion
 	}
 }

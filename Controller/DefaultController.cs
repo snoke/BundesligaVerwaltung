@@ -12,7 +12,7 @@ namespace BundesligaVerwaltung.Controller
 {
     class DefaultController
     {
-    	private XmlRepository Repository;
+    	private IRepository Repository;
     	private Terminal Terminal;
     	
     	private List<Team> _teams;
@@ -61,7 +61,8 @@ namespace BundesligaVerwaltung.Controller
     	    
     	
     	public DefaultController() {
-    		this.Repository = new XmlRepository();
+    		//this.Repository = new XmlRepository();
+    		this.Repository = new SqliteRepository();
     		this.Terminal = new Terminal();
     	}
     	
@@ -215,7 +216,8 @@ namespace BundesligaVerwaltung.Controller
         }
         public void Tabelle() {
         	List<Team> teams = this.Teams.OrderByDescending(x => x.GetWins().Count()).ToList();
-        	string output="Spieltag:" + teams.Min(x => x.GetMatches().Count()+1) + "\n";
+        //	string output="Spieltag:" + teams.Min(x => x.GetMatches().Count()+1) + "\n";
+        	string output="";
         	string[] cells = {"Mannschaft".PadLeft(24),"Spiele","Siege","Unentschieden","Niederlagen","Tore"};
     		for(int i = 0;i<cells.Length;i++) {
     			string message = cells[i];
@@ -250,12 +252,14 @@ namespace BundesligaVerwaltung.Controller
         			//output = output + ("\n");
         	}
 			elements.Add("Tabelle aktualisieren");
+			elements.Add("Team hinzufügen");
 			elements.Add("Programm beenden");
 			int choice = new SelectMenu.SelectMenu((string[]) elements.ToArray()).setTitle(output).select();
-			if (choice == elements.Count()-2) {
+			if (choice == elements.Count()-3) {
 				this.Teams = this.Repository.LoadTeams();
 				this.Tabelle();
 			} else if (choice == elements.Count()-1) {
+			} else if (choice == elements.Count()-2) {
 				//do nothing, but close program
 			} else {
 				this.TeamMenu(teams[choice]);
@@ -264,8 +268,15 @@ namespace BundesligaVerwaltung.Controller
         public void MainMenu() {
         	this.Tabelle();
         }
+        private void Migrate() {
+			SqliteRepository repo = new SqliteRepository();
+			List<Match> list = repo.LoadMatches();
+			
+        	
+        }
         public void Run()
         {
+        	//this.Migrate();
         	//this._MainMenu();
         	//this.MainMenu();
         	this.MainMenu();

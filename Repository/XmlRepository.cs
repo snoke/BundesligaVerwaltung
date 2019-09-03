@@ -16,7 +16,7 @@ using System.Data.SQLite;
 
 namespace BundesligaVerwaltung.Repository
 {
-	public class XmlRepository
+	public class XmlRepository:IRepository
 	{
 		#region properties
 		#endregion
@@ -31,42 +31,44 @@ namespace BundesligaVerwaltung.Repository
 		#endregion
 		
 		#region workers
-		public List<Member> LoadMembers() {
+		public override List<Member> LoadMembers() {
 			XDocument document = XDocument.Load("Members.xml");
 			List<Member> members = new List<Member>();
 			foreach(XElement element in document.Root.Elements("Member")) {
-					switch(element.Element("role").Value) {
-						case "Trainer" :
-							members.Add(new Trainer(element));
-							break;
-					}
-					
+							members.Add(new Member(XElementToList(element)));
 			}
 			return members;
 		}
-		public List<Match> LoadMatches() {
+		private List<object> XElementToList(XElement element) {
+			List<object> list = new List<object>();
+			foreach(XElement parameter in element.Descendants()) {
+				list.Add(parameter.Value);
+			}
+			return list;
+		}
+		public override List<Match> LoadMatches() {
 			XDocument document = XDocument.Load("Matches.xml");
 			List<Match> matches = new List<Match>();
 			
 			foreach(XElement element in document.Root.Elements("Match")) {
-				matches.Add(new Match(element));
+				matches.Add(new Match(XElementToList(element)));
 			}
 			
 			return matches;
 		}
-		public List<Team> LoadTeams() {
+		public override List<Team> LoadTeams() {
 			XDocument document = XDocument.Load("Teams.xml");
 			List<Team> teams = new List<Team>();
 			List<Match> matches = this.LoadMatches();
 			foreach(XElement element in document.Root.Elements("Team")) {
-				Team team = new Team(element);
+				Team team = new Team(XElementToList(element));
 				team.Matches = matches.Where(o => o.teamId == team.id  || o.opponentId == team.id).ToList();
 				teams.Add(team);
 			}
 			return teams;
 		}
 		
-		public void SaveMatches(List<Match> matches) {
+		public override void SaveMatches(List<Match> matches) {
 			XElement root = new XElement("root");
 			for(int i =0;i<matches.Count;i++) {
 				XElement e = new XElement("Match");
@@ -82,7 +84,7 @@ namespace BundesligaVerwaltung.Repository
 			xdoc.Add(root);
 			xdoc.Save("Matches.xml");
 		}
-		public void SaveTeams(List<Team> teams) {
+		public override void SaveTeams(List<Team> teams) {
 			XElement root = new XElement("root");
 			for(int i =0;i<teams.Count;i++) {
 				XElement e = new XElement("Team");
@@ -95,7 +97,7 @@ namespace BundesligaVerwaltung.Repository
 			xdoc.Add(root);
 			xdoc.Save("Teams.xml");
 		}
-		public void SaveMembers(List<Member> members) {
+		public override void SaveMembers(List<Member> members) {
 			XElement root = new XElement("root");
 			for(int i =0;i<members.Count;i++) {
 				XElement e = new XElement("Member");
