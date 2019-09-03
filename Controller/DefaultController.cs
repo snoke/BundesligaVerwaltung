@@ -2,6 +2,7 @@
 using System.Text;
 using BundesligaVerwaltung.View;
 using BundesligaVerwaltung.Repository;
+using BundesligaVerwaltung.Repository.DataStorage;
 using BundesligaVerwaltung.Model;
 using BundesligaVerwaltung.Model.Members;
 using System.Xml.Linq;
@@ -12,7 +13,7 @@ namespace BundesligaVerwaltung.Controller
 {
     class DefaultController
     {
-    	private IRepository Repository;
+    	private EntityRepository Repository;
     	private Terminal Terminal;
     	
     	private List<Team> _teams;
@@ -62,7 +63,7 @@ namespace BundesligaVerwaltung.Controller
     	
     	public DefaultController() {
     		//this.Repository = new XmlRepository();
-    		this.Repository = new SqliteRepository();
+    		this.Repository = new EntityRepository(new SQLiteStrategy());
     		this.Terminal = new Terminal();
     	}
     	
@@ -267,12 +268,6 @@ namespace BundesligaVerwaltung.Controller
         }
         public void MainMenu() {
         	this.Tabelle();
-        }
-        private void Migrate() {
-			SqliteRepository repo = new SqliteRepository();
-			List<Match> list = repo.LoadMatches();
-			
-        	
         }
         public void Run()
         {

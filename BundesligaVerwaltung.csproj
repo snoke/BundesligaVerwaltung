@@ -84,9 +84,10 @@
     <Compile Include="Model\Team.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\SqliteRepository.cs" />
-    <Compile Include="Repository\XmlRepository.cs" />
+    <Compile Include="Repository\DataStorage\DataStorage.cs" />
+    <Compile Include="Repository\DataStorage\SQLiteStrategy.cs" />
+    <Compile Include="Repository\DataStorage\XmlStrategy.cs" />
+    <Compile Include="Repository\EntityRepository.cs" />
     <Compile Include="View\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +111,7 @@
     <Folder Include="Model\Members" />
     <Folder Include="lib" />
     <Folder Include="Repository" />
+    <Folder Include="Repository\DataStorage" />
     <Folder Include="View" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

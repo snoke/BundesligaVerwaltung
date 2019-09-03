@@ -32,9 +32,9 @@ namespace BundesligaVerwaltung.Model
 		
 		public Member(List<object> row)
 		{
-			this.id = (int) Int32.Parse( (string) row[0]);
+			this.id = Int32.Parse(row[0].ToString());
 			this.name = (string) row[1];
-			this.teamid = (int) Int32.Parse( (string) row[2]);
+			this.teamid = Int32.Parse(row[2].ToString());
 			this.role = (string) row[3];
 		}
 		#endregion
