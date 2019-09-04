@@ -11,8 +11,6 @@ namespace BundesligaVerwaltung.Model
 {
 	public class Team:Entity
     {    	
-		public const int MAXIMUM_PARTICIPANTS = 18;
-		
 		public string name;
 		public List<Match> Matches = new List<Match>();
 
@@ -53,7 +51,7 @@ namespace BundesligaVerwaltung.Model
 			return this.GetDraws().Count() + 3 * this.GetWins().Count();
 		}
 		public override List<string[]> GetKeys() {
-			List<string[]> keys =base.GetKeys();
+			List<string[]> keys = base.GetKeys();
 			keys.Add(new string[]{"name","STRING"});
 			return keys;
 		}

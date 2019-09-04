@@ -46,10 +46,10 @@ namespace BundesligaVerwaltung.Model
 		#region workers
 		public override List<string[]> GetKeys() {
 			List<string[]> keys =base.GetKeys();
-			keys.Add(new string[]{"teamid","INTEGER"});
-			keys.Add(new string[]{"opponentscore","INTEGER"});
-			keys.Add(new string[]{"score","INTEGER"});
-			keys.Add(new string[]{"opponentid","INTEGER"});
+			keys.Add(new[]{"teamid","INTEGER"});
+			keys.Add(new[]{"opponentscore","INTEGER"});
+			keys.Add(new[]{"score","INTEGER"});
+			keys.Add(new[]{"opponentid","INTEGER"});
 			return keys;
 		}
 		

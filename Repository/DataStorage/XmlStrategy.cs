@@ -49,7 +49,6 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		
 		public override void RemoveEntity(Entity entity) {
 			XElement root = new XElement("root");
-			string name = entity.GetType().Name;
 			List<Entity> entities = this.LoadEntities(entity.GetType()).Where(x=> x.id != entity.id).ToList();
 			this.SaveList(entities);
 		}

@@ -17,13 +17,24 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 	public class SQLiteStrategy:DataStorage
 	{
 		#region properties
+		private string _filename;
+    	private string filename
+	    {
+	        get {
+    			return this._filename;
+    		}
+	        set {
+    			this._filename = value;
+    		}
+    		
+    	}
 		private SQLiteConnection _dbConnection;
     	private SQLiteConnection dbConnection
 	    {
 	        get {
     			//lazy loading
     			if (this._dbConnection==null) {
-    				this._dbConnection = new SQLiteConnection("Data Source = db.sqlite; Version = 3;");
+    				this._dbConnection = new SQLiteConnection("Data Source ="+filename+"; Version = 3;");
 					this._dbConnection.Open();
     			} else {}
     			return this._dbConnection;
@@ -35,8 +46,9 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		#endregion
 		
 		#region constructors
-			public SQLiteStrategy()
+			public SQLiteStrategy(string filename)
 			{
+				this.filename = filename;
 			}
 		#endregion
 		

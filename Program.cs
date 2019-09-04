@@ -14,7 +14,8 @@ namespace BundesligaVerwaltung
 	{
 		public static void Main(string[] args)
 		{
-			new TestController().Run();
+			// new TestController().Run();
+			new DefaultController().Run();
   //      	DefaultController defaultController = new DefaultController();
   //      	defaultController.Run();
 		}

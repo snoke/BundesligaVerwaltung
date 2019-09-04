@@ -63,7 +63,7 @@ namespace BundesligaVerwaltung.Controller
     	
     	public TestController() {
     		//this.Repository = new EntityRepository(new XmlStrategy());
-    		this.Repository = new EntityRepository(new SQLiteStrategy());
+    		this.Repository = new EntityRepository(new SQLiteStrategy("db.sqlite"));
     		this.Terminal = new Terminal();
     	}
     	
@@ -78,16 +78,12 @@ namespace BundesligaVerwaltung.Controller
 	        int choice = new SelectMenu.SelectMenu(menuElements).setTitle("Bitte wählen").select();
 	        if (choice == this.Teams.Count) {
 	        	//Add
-	        	if (this.Teams.Count()<Team.MAXIMUM_PARTICIPANTS) {
-		        	this.Teams.Add(
-		        		new Team(
-		        			this.Teams.Count,
-		        			this.Terminal.AskForString("Bitte geben Sie einen Vereinsnamen ein"))
-		        	);
-	    			this.Repository.SaveTeams(this.Teams);
-	        	} else {
-	        		this.Terminal.Message("Die Liga ist bereits voll!");
-	        	}
+	        	this.Teams.Add(
+	        		new Team(
+	        			this.Teams.Count,
+	        			this.Terminal.AskForString("Bitte geben Sie einen Vereinsnamen ein"))
+	        	);
+    			this.Repository.SaveTeams(this.Teams);
 	        	this.MainMenu();
 	        } else if (choice == this.Teams.Count+1) {
 	        	//Tabelle anzeigen
