@@ -7,8 +7,6 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-
-using System.Linq;
 using System.Collections.Generic;
 using BundesligaVerwaltung.Model;
 
@@ -18,13 +16,13 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 	{
 		#region properties
 		#endregion
-		
+
 		#region accessors
 		#endregion
-		
+
 		#region constructors
 		#endregion
-		
+
 		#region workers
 		public abstract List<Entity> LoadEntities(Type entityType);
 		public abstract void SaveEntity(Entity entity);

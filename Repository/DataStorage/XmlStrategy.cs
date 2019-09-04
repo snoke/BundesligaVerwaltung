@@ -7,75 +7,84 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using System.Xml.Linq;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Linq;
 using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Repository.DataStorage
 {
-	public class XmlStrategy:DataStorage
+	public class XmlStrategy : DataStorage
 	{
 		#region properties
 		#endregion
-		
+
 		#region accessors
 		#endregion
-		
+
 		#region constructors
-			public XmlStrategy()
-			{
-			}
+		public XmlStrategy()
+		{
+		}
 		#endregion
-		
+
 		#region workers
-		private List<object> XElementToList(XElement element) {
+		private List<object> XElementToList(XElement element)
+		{
 			List<object> list = new List<object>();
-			foreach(XElement parameter in element.Descendants()) {
+			foreach (XElement parameter in element.Descendants())
+			{
 				list.Add(parameter.Value);
 			}
 			return list;
 		}
-		
-		
-		public override List<Entity> LoadEntities(Type entityType) {
+
+
+		public override List<Entity> LoadEntities(Type entityType)
+		{
 			XDocument document = XDocument.Load(entityType.Name + ".xml");
 			List<Entity> entities = new List<Entity>();
-			foreach(XElement element in document.Root.Elements(entityType.Name)) {
-				entities.Add((Entity) Activator.CreateInstance(entityType,XElementToList(element)));
+			foreach (XElement element in document.Root.Elements(entityType.Name))
+			{
+				entities.Add((Entity)Activator.CreateInstance(entityType, XElementToList(element)));
 			}
 			return entities.OrderBy(x => x.id).ToList();
 		}
-		
-		public override void RemoveEntity(Entity entity) {
+
+		public override void RemoveEntity(Entity entity)
+		{
 			XElement root = new XElement("root");
-			List<Entity> entities = this.LoadEntities(entity.GetType()).Where(x=> x.id != entity.id).ToList();
-			this.SaveList(entities);
+			List<Entity> entities = LoadEntities(entity.GetType()).Where(x => x.id != entity.id).ToList();
+			SaveList(entities);
 		}
-		
-		private void SaveList(List<Entity> entities) {
+
+		private void SaveList(List<Entity> entities)
+		{
 			XElement root = new XElement("root");
 			string name = "Entity";
-			foreach(Entity entity in entities) {
+			foreach (Entity entity in entities)
+			{
 				name = entity.GetType().Name;
 				XElement e = new XElement(name);
 				List<object> values = entity.GetValues();
 				List<string[]> keys = entity.GetKeys();
-				for(int i=0;i<keys.Count();i++) {
-					e.Add(new XElement(keys[i][0],values[i].ToString()));
+				for (int i = 0; i < keys.Count(); i++)
+				{
+					e.Add(new XElement(keys[i][0], values[i].ToString()));
 				}
 				root.Add(e);
 			}
 			XDocument xdoc = new XDocument();
 			xdoc.Add(root);
-			xdoc.Save(name+".xml");
+			xdoc.Save(name + ".xml");
 		}
-		public override void SaveEntity(Entity entity) {
+		public override void SaveEntity(Entity entity)
+		{
 			XElement root = new XElement("root");
 			string name = entity.GetType().Name;
-			List<Entity> entities = this.LoadEntities(entity.GetType()).Where(x=> x.id != entity.id).ToList();
+			List<Entity> entities = LoadEntities(entity.GetType()).Where(x => x.id != entity.id).ToList();
 			entities.Add(entity);
-			this.SaveList(entities);
+			SaveList(entities);
 		}
 		#endregion
 	}

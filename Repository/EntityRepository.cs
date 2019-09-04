@@ -7,108 +7,130 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using BundesligaVerwaltung.Model;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Repository
 {
 	public class EntityRepository
 	{
-		
+
 		#region properties
-			DataStorage.DataStorage _dataStorage;
-			List<Team> _teams;
-			List<Member> _members;
-			List<Match> _matches;
+		private DataStorage.DataStorage _dataStorage;
+		private List<Team> _teams;
+		private List<Member> _members;
+		private List<Match> _matches;
 		#endregion
-		
-		
+
+
 		#region accessors
-			DataStorage.DataStorage dataStorage {
-				get { return this._dataStorage; }
-				set { this._dataStorage = value; }
-			}
-			
-			public List<Team> teams {
-				get { 
-					if (this._teams==null) {
-						this._teams=this.LoadTeams();
-					}
-					return this._teams; 
+		private DataStorage.DataStorage dataStorage
+		{
+			get { return _dataStorage; }
+			set { _dataStorage = value; }
+		}
+
+		public List<Team> teams
+		{
+			get
+			{
+				if (_teams == null)
+				{
+					_teams = LoadTeams();
 				}
-				set { this._teams = value; }
+				return _teams;
 			}
-			public List<Member> members {		
-				get { 
-					if (this._members==null) {
-						this._members=this.LoadMembers();
-					}
-					return this._members; 
+			set { _teams = value; }
+		}
+		public List<Member> members
+		{
+			get
+			{
+				if (_members == null)
+				{
+					_members = LoadMembers();
 				}
-				set { this._members = value; }
+				return _members;
 			}
-			public List<Match> matches {		
-				get { 
-					if (this._matches==null) {
-						this._matches=this.LoadMatches();
-					}
-					return this._matches; 
+			set { _members = value; }
+		}
+		public List<Match> matches
+		{
+			get
+			{
+				if (_matches == null)
+				{
+					_matches = LoadMatches();
 				}
-				set { this._matches = value; }
+				return _matches;
 			}
+			set { _matches = value; }
+		}
 		#endregion
-		
-		
+
+
 		#region constructors
 		public EntityRepository(DataStorage.DataStorage dataStorage)
 		{
 			this.dataStorage = dataStorage;
 		}
 		#endregion
-		
+
 		#region workers
-		public  void SaveTeams(List<Team> elements) {
-			foreach(Team element in elements) {
-				this.dataStorage.SaveEntity(element);
+		public void SaveTeams(List<Team> elements)
+		{
+			foreach (Team element in elements)
+			{
+				dataStorage.SaveEntity(element);
 			}
-			
+
 		}
-		public  void SaveMatches(List<Match> elements) {
-			foreach(Match element in elements) {
-				this.dataStorage.SaveEntity(element);
+		public void SaveMatches(List<Match> elements)
+		{
+			foreach (Match element in elements)
+			{
+				dataStorage.SaveEntity(element);
 			}
-			
+
 		}
-		public   void SaveMembers(List<Member> elements) {
-			foreach(Member element in elements) {
-				this.dataStorage.SaveEntity(element);
+		public void SaveMembers(List<Member> elements)
+		{
+			foreach (Member element in elements)
+			{
+				dataStorage.SaveEntity(element);
 			}
 		}
-		public  List<Match> LoadMatches() {
+		public List<Match> LoadMatches()
+		{
 			List<Match> matches = new List<Match>();
-			foreach(Match row in  this.dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Match"))) {
+			foreach (Match row in dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Match")).OrderBy(x => x.id))
+			{
 				matches.Add(row);
 			}
-			return matches;
+			return matches.OrderBy(x => x.id).ToList();
 		}
-		
-		public  List<Team> LoadTeams() {
-			List<Match> matches = this.LoadMatches().ToList();
+
+		public List<Team> LoadTeams()
+		{
+			List<Match> matches = LoadMatches().ToList();
 			List<Team> teams = new List<Team>();
-			foreach(Team team in this.dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Team"))) {
-				team.Matches = matches.Where(o => (o.teamId == team.id) || (o.opponentId == team.id)).ToList();
+			foreach (Team team in dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Team")))
+			{
+				team.Matches = matches.Where(o => (o.TeamId == team.id) || (o.OpponentId == team.id)).ToList();
 				teams.Add(team);
 			}
-			return teams;
+			return teams.OrderBy(x => x.id).ThenBy(x => x.GetPoints()).ToList();
 		}
-		
-		public  List<Member> LoadMembers() {
+
+		public List<Member> LoadMembers()
+		{
 			List<Member> members = new List<Member>();
-			foreach(Member row in  this.dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Member"))) {
-				members.Add(row);	
+			foreach (Member row in dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Member")).OrderBy(x => x.id))
+			{
+				members.Add(row);
 			}
-			return members;
+			return members.OrderBy(x => x.id).ToList();
 		}
 		#endregion
 	}

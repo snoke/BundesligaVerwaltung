@@ -8,123 +8,150 @@ namespace SelectMenu
 {
 	public class SelectMenu
 	{
-		
+
 		#region properties
 		private StyleInterface _style;
 		private LanguageInterface _language;
-		
+
 		private int _page = 1;
 		private int _pos = 0;
 		private int _maxElementsPerPage = 24;
 		private SelectElement[] _selectElements;
 		private string[] _title;
 		#endregion
-		
+
 		#region accessors
-		
-		public SelectMenu setLanguage(LanguageInterface language) {
-			this._language = language;
+
+		public SelectMenu setLanguage(LanguageInterface language)
+		{
+			_language = language;
 			return this;
 		}
-		
-		public SelectMenu setLanguage(string language) {
-			switch (language.ToLower()) {
-		 		case "german":
-					this._language = new German();
+
+		public SelectMenu setLanguage(string language)
+		{
+			switch (language.ToLower())
+			{
+				case "german":
+					_language = new German();
 					break;
 				case "english":
-					this._language = new English();
-					break;
-			 }
-			return this;
-		}
-		public SelectMenu setStyle(string style) {
-			switch (style.ToLower()) {
-				case "color":
-					this._style = new ColorMenu();
-					break;
-				case "prefix":
-					this._style = new PrefixMenu();
+					_language = new English();
 					break;
 			}
 			return this;
 		}
-		public SelectMenu setStyle(StyleInterface style) {
-			this._style=style;
+		public SelectMenu setStyle(string style)
+		{
+			switch (style.ToLower())
+			{
+				case "color":
+					_style = new ColorMenu();
+					break;
+				case "prefix":
+					_style = new PrefixMenu();
+					break;
+			}
 			return this;
 		}
-		public SelectMenu setTitle(params string[] title) {
-			this._title = title;
+		public SelectMenu setStyle(StyleInterface style)
+		{
+			_style = style;
 			return this;
 		}
-		
-		public SelectMenu setMaxElementsPerPage(int maxElementsPerPage) {
-			this._maxElementsPerPage = maxElementsPerPage;
+		public SelectMenu setTitle(params string[] title)
+		{
+			_title = title;
+			return this;
+		}
+
+		public SelectMenu setMaxElementsPerPage(int maxElementsPerPage)
+		{
+			_maxElementsPerPage = maxElementsPerPage;
 			return this;
 		}
 		#endregion
-		
+
 		#region constructors
 		public SelectMenu(SelectElement[] selectElements)
 		{
-		 	this.Initialize(selectElements);
+			Initialize(selectElements);
 		}
 		public SelectMenu(params string[] stringArray)
 		{
-		 	this.Initialize(this.generateElementsByStrings(stringArray));
+			Initialize(generateElementsByStrings(stringArray));
 		}
 		#endregion
-		
+
 		#region workers
-		private void Initialize(SelectElement[] selectElements) {
-			this.setLanguage(new German());
-			this.setStyle(new ColorMenu());
-		 	this._selectElements = selectElements;
+		private void Initialize(SelectElement[] selectElements)
+		{
+			setLanguage(new German());
+			setStyle(new ColorMenu());
+			_selectElements = selectElements;
 		}
-		
-		public int call() {
-			SelectElement element = this.handle();
-			if (element._callable!=null) {
+
+		public int call()
+		{
+			SelectElement element = handle();
+			if (element._callable != null)
+			{
 				element._callable();
-			} else {}
+			}
+			else { }
 			return element._id;
 		}
-		public int select() {
-			return this.handle()._id;
+		public int select()
+		{
+			return handle()._id;
 		}
-		public SelectElement handle() {
-			View View = new View(this._style,this._language);
-			while (true) {
-				ConsoleKeyInfo UserInput = View.SelectMenu(this._selectElements,this._maxElementsPerPage,this._pos,this._page,this._title); 
-				
-				if ((UserInput.Key.ToString() == "DownArrow") || (UserInput.Key.ToString() == "RightArrow")) {
-			    	this._pos++;
-				} else if ((UserInput.Key.ToString() == "UpArrow") || (UserInput.Key.ToString() == "LeftArrow")) {
-				   	this._pos--;
-				} else if (UserInput.Key.ToString() == "Enter") {
+		public SelectElement handle()
+		{
+			View View = new View(_style, _language);
+			while (true)
+			{
+				ConsoleKeyInfo UserInput = View.SelectMenu(_selectElements, _maxElementsPerPage, _pos, _page, _title);
+
+				if ((UserInput.Key.ToString() == "DownArrow") || (UserInput.Key.ToString() == "RightArrow"))
+				{
+					_pos++;
+				}
+				else if ((UserInput.Key.ToString() == "UpArrow") || (UserInput.Key.ToString() == "LeftArrow"))
+				{
+					_pos--;
+				}
+				else if (UserInput.Key.ToString() == "Enter")
+				{
 					Console.Clear();
-		       		return this._selectElements[this._pos];
+					return _selectElements[_pos];
 				}
-				
-		        if (this._pos > this._selectElements.Length-1) {
-		        	this._pos=0;
-		        } else if (this._pos < 0) {
-		        	this._pos = this._selectElements.Length-1;
+
+				if (_pos > _selectElements.Length - 1)
+				{
+					_pos = 0;
 				}
-				
-		       	while (this._pos+1 >this._maxElementsPerPage*this._page) {
-		    		this._page++;
+				else if (_pos < 0)
+				{
+					_pos = _selectElements.Length - 1;
 				}
-				while (this._pos+1 < this._maxElementsPerPage*this._page-this._maxElementsPerPage+1) {
-			    	this._page--;
+
+				while (_pos + 1 > _maxElementsPerPage * _page)
+				{
+					_page++;
 				}
-		 	}
+				while (_pos + 1 < _maxElementsPerPage * _page - _maxElementsPerPage + 1)
+				{
+					_page--;
+				}
+			}
 		}
-		private SelectElement[]  generateElementsByStrings(string[] stringArray) {
+		private SelectElement[] generateElementsByStrings(string[] stringArray)
+		{
 			SelectElement[] selectElements = new SelectElement[stringArray.Length];
 			int i = 0;
-			foreach(string e in stringArray) {
-				selectElements[i] = new SelectElement(e,i);
+			foreach (string e in stringArray)
+			{
+				selectElements[i] = new SelectElement(e, i);
 				i++;
 			}
 			return selectElements;

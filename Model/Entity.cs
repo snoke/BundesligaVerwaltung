@@ -14,34 +14,44 @@ namespace BundesligaVerwaltung.Model
 	public class Entity
 	{
 		#region properties
-		public int id;
+		public int _id;
 		#endregion
-		
+
 		#region accessors
+		public int id
+		{
+			get { return _id; }
+			set { _id = value; }
+		}
 		#endregion
-		
+
 		#region constructors
-			public Entity(int id) {
-				this.init(id);
-			}
-			public Entity(List<object> row) {
-				this.init(Int32.Parse(row[0].ToString()));
-			}
+		public Entity(int id)
+		{
+			init(id);
+		}
+		public Entity(List<object> row)
+		{
+			init(Int32.Parse(row[0].ToString()));
+		}
 		#endregion
-		
+
 		#region workers
-		private void init(int id) {
+		private void init(int id)
+		{
 			this.id = id;
 		}
-		
-		public virtual  List<string[]> GetKeys() {
+
+		public virtual List<string[]> GetKeys()
+		{
 			List<string[]> keys = new List<string[]>();
-			keys.Add(new string[]{"id","INTEGER"});
+			keys.Add(new string[] { "id", "INTEGER" });
 			return keys;
 		}
-		public virtual List<object> GetValues() {
+		public virtual List<object> GetValues()
+		{
 			List<object> values = new List<object>();
-			values.Add(this.id);
+			values.Add(id);
 			return values;
 		}
 		#endregion

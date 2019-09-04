@@ -6,7 +6,7 @@ using System;
 
 namespace SelectMenu
 {
-	public class ColorMenu: StyleInterface
+	public class ColorMenu : StyleInterface
 	{
 		#region properties
 		private ConsoleColor _foregroundSelected = ConsoleColor.Green;
@@ -14,46 +14,53 @@ namespace SelectMenu
 		private ConsoleColor _backgroundSelected = Console.BackgroundColor;
 		private ConsoleColor _backgroundNotSelected = Console.BackgroundColor;
 		#endregion
-		
+
 		#region accessors
-		public ColorMenu setSelectedForgroundColor(ConsoleColor color) {
-			this._foregroundSelected=color;
+		public ColorMenu setSelectedForgroundColor(ConsoleColor color)
+		{
+			_foregroundSelected = color;
 			return this;
 		}
-		public ColorMenu setNotSelectedForgroundColor(ConsoleColor color) {
-			this._foregroundNotSelected=color;
+		public ColorMenu setNotSelectedForgroundColor(ConsoleColor color)
+		{
+			_foregroundNotSelected = color;
 			return this;
 		}
-		public ColorMenu setSelectedBackgroundColor(ConsoleColor color) {
-			this._backgroundSelected=color;
+		public ColorMenu setSelectedBackgroundColor(ConsoleColor color)
+		{
+			_backgroundSelected = color;
 			return this;
 		}
-		public ColorMenu setNotSelectedBackgroundColor(ConsoleColor color) {
-			this._backgroundNotSelected=color;
+		public ColorMenu setNotSelectedBackgroundColor(ConsoleColor color)
+		{
+			_backgroundNotSelected = color;
 			return this;
 		}
 		#endregion
-		
+
 		#region constructors
 		public ColorMenu()
 		{
 		}
 		#endregion
-		
+
 		#region workers
-		private void Write(string line) {
+		private void Write(string line)
+		{
 			Console.WriteLine(line);
 			Console.ResetColor();
 		}
-		public void ElementSelected(string caption) {
-			Console.ForegroundColor  = this._foregroundSelected;
-			Console.BackgroundColor = this._backgroundSelected;
-			this.Write("  " + caption);
+		public void ElementSelected(string caption)
+		{
+			Console.ForegroundColor = _foregroundSelected;
+			Console.BackgroundColor = _backgroundSelected;
+			Write("  " + caption);
 		}
-		public void ElementNotSelected(string caption) {
-			Console.ForegroundColor  = this._foregroundNotSelected;
-			Console.BackgroundColor = this._backgroundNotSelected;
-			this.Write(" " + caption);
+		public void ElementNotSelected(string caption)
+		{
+			Console.ForegroundColor = _foregroundNotSelected;
+			Console.BackgroundColor = _backgroundNotSelected;
+			Write(" " + caption);
 		}
 		#endregion
 	}

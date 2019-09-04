@@ -14,58 +14,74 @@ namespace BundesligaVerwaltung.View
 	{
 		#region properties
 		#endregion
-		
+
 		#region accessors
 		#endregion
-		
+
 		#region constructors
-			public Terminal()
+		public Terminal()
+		{
+		}
+		public int Menu(string[] options)
+		{
+			return new SelectMenu.SelectMenu(options).setTitle("Bitte wählen").select();
+		}
+		public int AskForInteger(string question)
+		{
+			return AskForInteger(question, 0);
+		}
+		public int AskForInteger(string question, int intVal)
+		{
+			Console.Clear();
+			if (intVal != 0)
 			{
+				Console.Write(question + " :" + intVal);
 			}
-			public int Menu(string[] options) {
-				return new SelectMenu.SelectMenu(options).setTitle("Bitte wählen").select();
+			else
+			{
+				Console.Write(question + " :");
 			}
-			public int AskForInteger(string question) {
-				return this.AskForInteger(question,0);
+			ConsoleKeyInfo cki = Console.ReadKey(false);
+			if (cki.Key.ToString() == "Backspace")
+			{
+				return AskForInteger(question, intVal / 10);
 			}
-			public int AskForInteger(string question,int intVal) {
-				Console.Clear();
-				if (intVal!=0) {
-					Console.Write(question + " :" + intVal);
-				} else {
-					Console.Write(question + " :");
+			else if (cki.Key.ToString() == "Enter")
+			{
+				return intVal;
+			}
+			else
+			{
+				int input;
+				bool success = Int32.TryParse(cki.KeyChar.ToString(), out input);
+				if (false == success)
+				{
+					return AskForInteger(question, intVal);
 				}
-				ConsoleKeyInfo cki = Console.ReadKey(false);
-				if(cki.Key.ToString()=="Backspace") {
-					return this.AskForInteger(question,intVal/10);
-				} else if (cki.Key.ToString()=="Enter") {
-					return intVal;
-				} else  {
-					int input;
-					bool success = Int32.TryParse(cki.KeyChar.ToString(), out input);
-					if (false==success) {
-						return this.AskForInteger(question,intVal);
-					} else {
-					    try 
-					    {
-							intVal = intVal * 10 + input;
-					    }
-					    catch(System.OverflowException) {}
-						return this.AskForInteger(question, intVal);
+				else
+				{
+					try
+					{
+						intVal = intVal * 10 + input;
 					}
+					catch (System.OverflowException) { }
+					return AskForInteger(question, intVal);
 				}
 			}
-			
-			public void Message(string message) {
-				new SelectMenu.SelectMenu("OK").setTitle(message).select();
-			}
-			public string AskForString(string question) {
-				Console.WriteLine(question);
-				string input = Console.ReadLine();
-				return input;
-			}
+		}
+
+		public void Message(string message)
+		{
+			new SelectMenu.SelectMenu("OK").setTitle(message).select();
+		}
+		public string AskForString(string question)
+		{
+			Console.WriteLine(question);
+			string input = Console.ReadLine();
+			return input;
+		}
 		#endregion
-		
+
 		#region workers
 		#endregion
 	}

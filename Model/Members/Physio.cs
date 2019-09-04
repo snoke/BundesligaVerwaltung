@@ -6,28 +6,27 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-using System.Xml.Linq;
-using System;
 using System.Collections.Generic;
-using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Model.Members
 {
-	public class Physio:Member
+	public class Physio : Member
 	{
 		#region properties
 		#endregion
-		
+
 		#region accessors
 		#endregion
-		
+
 		#region constructors
-		public Physio(int id, string name,int teamid):base( id,  name, teamid) {
+		public Physio(int id, string name, int teamid) : base(id, name, teamid)
+		{
 		}
-		public Physio(List<object> row):base(row) {
-		}		
+		public Physio(List<object> row) : base(row)
+		{
+		}
 		#endregion
-		
+
 		#region workers
 		#endregion
 	}
