@@ -34,7 +34,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 	        get {
     			//lazy loading
     			if (this._dbConnection==null) {
-    				this._dbConnection = new SQLiteConnection("Data Source ="+filename+"; Version = 3;");
+    				this._dbConnection = new SQLiteConnection("Data Source ="+this.filename+"; Version = 3;");
 					this._dbConnection.Open();
     			} else {}
     			return this._dbConnection;
