@@ -68,24 +68,24 @@ namespace BundesligaVerwaltung.Repository
 		#endregion
 		
 		#region workers
-		public virtual void SaveTeams(List<Team> elements) {
+		public  void SaveTeams(List<Team> elements) {
 			foreach(Team element in elements) {
 				this.dataStorage.SaveEntity(element);
 			}
 			
 		}
-		public virtual void SaveMatches(List<Match> elements) {
+		public  void SaveMatches(List<Match> elements) {
 			foreach(Match element in elements) {
 				this.dataStorage.SaveEntity(element);
 			}
 			
 		}
-		public virtual  void SaveMembers(List<Member> elements) {
+		public   void SaveMembers(List<Member> elements) {
 			foreach(Member element in elements) {
 				this.dataStorage.SaveEntity(element);
 			}
 		}
-		public virtual List<Match> LoadMatches() {
+		public  List<Match> LoadMatches() {
 			List<Match> matches = new List<Match>();
 			foreach(Match row in  this.dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Match"))) {
 				matches.Add(row);
@@ -93,7 +93,7 @@ namespace BundesligaVerwaltung.Repository
 			return matches;
 		}
 		
-		public virtual List<Team> LoadTeams() {
+		public  List<Team> LoadTeams() {
 			List<Match> matches = this.LoadMatches().ToList();
 			List<Team> teams = new List<Team>();
 			foreach(Team team in this.dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Team"))) {
@@ -103,7 +103,7 @@ namespace BundesligaVerwaltung.Repository
 			return teams;
 		}
 		
-		public virtual List<Member> LoadMembers() {
+		public  List<Member> LoadMembers() {
 			List<Member> members = new List<Member>();
 			foreach(Member row in  this.dataStorage.LoadEntities(Type.GetType("BundesligaVerwaltung.Model.Member"))) {
 				members.Add(row);	
