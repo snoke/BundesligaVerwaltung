@@ -33,7 +33,7 @@ namespace BundesligaVerwaltung.Model
 			return  this.Matches.Where(x => (x.teamId == this.id && x.score > x.opponentScore) || (x.opponentId==this.id && x.score < x.opponentScore)).ToList();
 		}
 		public List<Match> GetLosses() {
-			return  this.Matches.Where(x => (x.teamId == this.id && x.score > x.opponentScore) || (x.opponentId==this.id && x.score < x.opponentScore)).ToList();
+			return  this.Matches.Where(x => (x.teamId == this.id && x.score < x.opponentScore) || (x.opponentId==this.id && x.score > x.opponentScore)).ToList();
 		}
 		public int GetGoals() {
 			int goals = 0;
