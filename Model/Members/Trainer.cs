@@ -22,12 +22,15 @@ namespace BundesligaVerwaltung.Model.Members
 		public Trainer(List<object> row) : base(row)
 		{
 		}
-		public Trainer(int id, string name, int teamid) : base(id, name, teamid)
+		public Trainer(int id, string name, int teamid) : base(id, name, teamid, "Trainer")
 		{
-		}
-		#endregion
+        }
+        public Trainer(Member member) : base(member.id, member.Name, member.Teamid, "Trainer")
+        {
+        }
+        #endregion
 
-		#region workers
-		#endregion
-	}
+        #region workers
+        #endregion
+    }
 }

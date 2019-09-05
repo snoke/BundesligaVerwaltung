@@ -8,9 +8,10 @@
  */
 using System;
 using System.Collections.Generic;
+using BundesligaVerwaltung.Model.Members;
 namespace BundesligaVerwaltung.Model
 {
-	public class Member : Entity
+	public abstract class Member : Entity
 	{
 		#region properties
 		private string name;
@@ -21,26 +22,24 @@ namespace BundesligaVerwaltung.Model
 		#region accessors
 		public string Name { get => name; set => name = value; }
 		public int Teamid { get => teamid; set => teamid = value; }
-		public string Role { get => role; set => role = value; }
 		#endregion
 
 		#region constructors
-		public Member(int id, string name, int teamid) : base(id)
+		public Member(int id, string name, int teamid,string role) : base(id)
 		{
-			this.name = name;
-			this.teamid = teamid;
-		}
+			Name = name;
+			Teamid = teamid;
+        }
 
 		public Member(List<object> row) : base(row)
 		{
-			name = (string)row[1];
-			teamid = Int32.Parse(row[2].ToString());
-			role = (string)row[3];
+            Name = (string)row[1];
+            Teamid = Int32.Parse(row[2].ToString());
 		}
 		#endregion
 
 		#region workers
-		public override List<string[]> GetKeys()
+		public  override List<string[]> GetKeys()
 		{
 			List<string[]> keys = base.GetKeys();
 			keys.Add(new string[] { "name", "STRING" });

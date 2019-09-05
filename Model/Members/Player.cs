@@ -22,7 +22,10 @@ namespace BundesligaVerwaltung.Model.Members
 		public Player(List<object> row) : base(row)
 		{
 		}
-		public Player(int id, string name, int teamid) : base(id, name, teamid)
+        public Player(Member member) : base(member.id, member.Name, member.Teamid, "Player")
+        {
+        }
+        public Player(int id, string name, int teamid) : base(id, name, teamid, "Player")
 		{
 		}
 		#endregion

@@ -62,8 +62,7 @@ namespace BundesligaVerwaltung.Model
 		}
 		public int GetPoints()
 		{
-			//List<Match> matches =  this.Matches.Where(x => (x.teamId == this.id) || (x.opponentId == this.id)).ToList();
-			return GetDraws().Count() + 3 * GetWins().Count();
+			return GetDraws().Count() + (3 * GetWins().Count());
 		}
 		public override List<string[]> GetKeys()
 		{

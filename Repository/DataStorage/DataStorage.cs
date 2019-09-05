@@ -23,7 +23,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		#region constructors
 		#endregion
 
-		#region workers
+        #region workers
 		public abstract List<Entity> LoadEntities(Type entityType);
 		public abstract void SaveEntity(Entity entity);
 		public abstract void RemoveEntity(Entity entity);

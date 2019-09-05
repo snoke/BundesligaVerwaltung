@@ -54,7 +54,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		public SQLiteStrategy(string filename)
 		{
 			this.filename = filename;
-		}
+        }
 		#endregion
 
 		#region workers
@@ -62,8 +62,8 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		{
 			SQLiteCommand Command = new SQLiteCommand(sql, dbConnection);
 			SQLiteDataReader reader = Command.ExecuteReader();
-
 			List<List<object>> rows = new List<List<object>>();
+
 			while (reader.Read())
 			{
 				List<object> row = new List<object>();
@@ -116,13 +116,13 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
 		public override List<Entity> LoadEntities(Type entityType)
 		{
-
-			List<Entity> list = new List<Entity>();
-			foreach (List<object> row in query("SELECT * FROM " + entityType.Name + ";"))
+            List<List<object>> entities = query("SELECT * FROM " + entityType.Name + ";");
+            List<Entity> list = new List<Entity>();
+			foreach (List<object> row in entities)
 			{
 				list.Add((Entity)Activator.CreateInstance(entityType, row));
 			}
-			return list.OrderBy(x => x.id).ToList();
+			return list.ToList();
 		}
 		public override void RemoveEntity(Entity entity)
 		{

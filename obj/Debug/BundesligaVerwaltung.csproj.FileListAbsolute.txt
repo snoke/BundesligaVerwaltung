@@ -1,10 +1,6 @@
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\BundesligaVerwaltung.exe.config
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\BundesligaVerwaltung.exe
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\BundesligaVerwaltung.pdb
-C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\EntityFramework.dll
-C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\EntityFramework.SqlServer.dll
-C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\System.Data.SQLite.dll
-C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\System.Data.SQLite.Linq.dll
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\EntityFramework.xml
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\System.Data.SQLite.xml
@@ -14,3 +10,7 @@ C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\System.Data.SQLite.d
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\obj\Debug\BundesligaVerwaltung.csprojAssemblyReference.cache
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\obj\Debug\BundesligaVerwaltung.csproj.CoreCompileInputs.cache
 C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\obj\Debug\BundesligaVerwaltung.csproj.CopyComplete
+C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\EntityFramework.dll
+C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\System.Data.SQLite.dll
+C:\Users\Stefan\Desktop\test\BundesligaVerwaltung\bin\Debug\System.Data.SQLite.Linq.dll

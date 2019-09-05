@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace BundesligaVerwaltung.Model
 {
-	public class Entity
+	public abstract class Entity
 	{
 		#region properties
 		public int _id;
@@ -28,16 +28,16 @@ namespace BundesligaVerwaltung.Model
 		#region constructors
 		public Entity(int id)
 		{
-			init(id);
+			Init(id);
 		}
 		public Entity(List<object> row)
 		{
-			init(Int32.Parse(row[0].ToString()));
+			Init(Int32.Parse(row[0].ToString()));
 		}
 		#endregion
 
 		#region workers
-		private void init(int id)
+		private void Init(int id)
 		{
 			this.id = id;
 		}
