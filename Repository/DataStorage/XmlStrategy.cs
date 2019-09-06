@@ -26,10 +26,10 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		public XmlStrategy()
 		{
 		}
-		#endregion
+        #endregion
 
-		#region workers
-		private List<object> XElementToList(XElement element)
+        #region workers
+        private List<object> XElementToList(XElement element)
 		{
 			List<object> list = new List<object>();
 			foreach (XElement parameter in element.Descendants())

@@ -28,45 +28,61 @@ namespace BundesligaVerwaltung.View
         #endregion
 
         #region workers
-        public int Scoreboard(List<Team> teams)
+        public string Scoreboard(List<Match> matches,List<Team> teams)
         {
-            string output = "Spieltag:" + teams.Min(x => x.GetMatches().Count() + 1) + "\n";
-            string[] cells = { "Mannschaft".PadLeft(24), "Spiele", "Siege", "Unentschieden", "Niederlagen", "Tore", "Punkte" };
-            for (int i = 0; i < cells.Length; i++)
-            {
-                output += cells[i] + " | ";
-            }
-            output += "\n";
-            for (int i = 0; i < cells.Length; i++)
-            {
-                output += ("".PadRight(cells[i].Length, (char)'-') + "---");
-            }
-            List<string> elements = new List<string>();
+
+            List<string[]> rows = new List<string[]>();
+            rows.Add(new string[] {
+                    "Mannschaft",
+                    "Siege",
+                    "Unentschieden",
+                    "Niederlagen",
+                   "Punkte",
+                });
             foreach (Team team in teams)
             {
-                string line = "";
-                string name = team.GetName();
-                string[] values = {
-                        name,
-                        team.GetMatches().Count().ToString(),
-                        team.GetWins().Count().ToString(),
-                        team.GetDraws().Count().ToString(),
-                        team.GetLosses().Count().ToString(),
-                        team.GetGoals().ToString(),
-                        team.GetPoints().ToString(),
-                    };
-                for (int i = 0; i < values.Length; i++)
-                {
-                    int length = cells[i].Length;
-                    if (values[i].Length > length)
-                    {
-                        values[i] = values[i].Substring(0, length);
-                    }
-                    line = line + (values[i].PadLeft(length) + " | ");
-                }
-                elements.Add(line);
+                int wins = matches.Where(x => (x.OpponentId == team.id && x.OpponentScore > x.Score) || (x.TeamId == team.id && x.Score > x.OpponentScore)).Count();
+                int draws = matches.Where(x => (x.OpponentId == team.id || x.TeamId == team.id) && x.Score == x.OpponentScore).Count();
+                int losses = matches.Where(x => (x.OpponentId == team.id && x.OpponentScore < x.Score) || (x.TeamId == team.id && x.Score < x.OpponentScore)).Count();
+                int points = wins * 3 + draws;
+
+                rows.Add(new string[] {
+                    team.Name,
+                    wins.ToString(),
+                    draws.ToString(),
+                    losses.ToString(),
+                   points.ToString(),
+                });
             }
-            return Menu((string[])elements.ToArray(), output);
+            return this.Table(rows);
+        }
+
+        public string Table(List<string[]> rows)
+        {
+            string output = "";
+
+            List<int> longest = new List<int>();
+            foreach (string[] row in rows) {
+                while (longest.Count() < row.Count())
+                {
+                    longest.Add(0);
+                }
+                for(int i = 0;i<row.Count(); i++)
+                if(longest[i]<row[i].Length)
+                {
+                    longest[i] = row[i].Length;
+                }
+            }
+
+                foreach (string[] row in rows)
+            {
+                for (int i = 0; i < row.Length; i++)
+                {
+                    output += row[i].PadLeft(longest[i]) + " | ";
+                }
+                output += "\n";
+            }
+            return output;
         }
         public int Menu(string[] options,string header)
         {
@@ -99,8 +115,7 @@ namespace BundesligaVerwaltung.View
             else
             {
                 int input;
-                bool success = Int32.TryParse(cki.KeyChar.ToString(), out input);
-                if (false == success)
+                if (false == Int32.TryParse(cki.KeyChar.ToString(), out input))
                 {
                     return AskForInteger(question, intVal);
                 }

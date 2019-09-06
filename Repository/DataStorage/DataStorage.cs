@@ -25,8 +25,8 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
         #region workers
 		public abstract List<Entity> LoadEntities(Type entityType);
-		public abstract void SaveEntity(Entity entity);
+        public abstract void SaveEntity(Entity entity);
 		public abstract void RemoveEntity(Entity entity);
-		#endregion
-	}
+        #endregion
+    }
 }

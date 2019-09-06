@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BundesligaVerwaltung.Model;
-using BundesligaVerwaltung.Model.Members;
 using BundesligaVerwaltung.Repository;
 using BundesligaVerwaltung.Repository.DataStorage;
 using BundesligaVerwaltung.View;
@@ -133,29 +132,32 @@ namespace BundesligaVerwaltung.Controller
 				switch (new SelectMenu.SelectMenu("Spieler", "Trainer", "Physio", "Zurück").setTitle("Bitte eine Rolle wählen").select())
 				{
 					case 0:
-						Members.Add(new Player(
+						Members.Add(new Member(
 							Members.Count,
 							Terminal.AskForString("Bitte geben Sie einen Namen ein"),
-							team.id
+							team.id,
+                            "Player"
 						));
 						Repository.SaveMembers(Members);
 						MainMenu();
 						break;
 					case 1:
-						Members.Add(new Physio(
+						Members.Add(new Member(
 							Members.Count,
 							Terminal.AskForString("Bitte geben Sie einen Namen ein"),
-							team.id
-						));
+							team.id,
+                            "Trainer"
+                        ));
 						Repository.SaveMembers(Members);
 						MainMenu();
 						break;
 					case 2:
-						Members.Add(new Trainer(
+						Members.Add(new Member(
 							Members.Count,
 							Terminal.AskForString("Bitte geben Sie einen Namen ein"),
-							team.id
-						));
+							team.id,
+                            "Physio"
+                        ));
 						Repository.SaveMembers(Members);
 						MainMenu();
 						break;
@@ -242,7 +244,7 @@ namespace BundesligaVerwaltung.Controller
 		}
 		public void Tabelle()
 		{
-			List<Team> teams = Teams.OrderByDescending(x => x.GetWins().Count()).ToList();
+			List<Team> teams = Teams.OrderByDescending(x => GetTeamPoints(x)).ToList();
 			//	string output="Spieltag:" + teams.Min(x => x.GetMatches().Count()+1) + "\n";
 			string output = "";
 			string[] cells = { "Mannschaft".PadLeft(24), "Spiele", "Siege", "Unentschieden", "Niederlagen", "Tore" };
@@ -310,9 +312,6 @@ namespace BundesligaVerwaltung.Controller
 		}
 		public void Run()
 		{
-			//this.Migrate();
-			//this._MainMenu();
-			//this.MainMenu();
 			MainMenu();
 		}
 	}

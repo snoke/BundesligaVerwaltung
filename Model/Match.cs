@@ -44,7 +44,7 @@ namespace BundesligaVerwaltung.Model
 		#endregion
 
 		#region constructors
-		public Match(int id, int teamId, int opponentId, int score, int opponentScore) : base(id)
+		public Match(int? id, int teamId, int opponentId, int score, int opponentScore) : base(id)
 		{
 			TeamId = teamId;
 			OpponentId = opponentId;
@@ -52,7 +52,7 @@ namespace BundesligaVerwaltung.Model
 			OpponentScore = opponentScore;
 		}
 
-		public Match(List<object> row) : base(row)
+		public Match(List<object> row) : base((int) Int32.Parse(row[0].ToString()))
 		{
 			TeamId = Int32.Parse(row[1].ToString());
 			OpponentId = Int32.Parse(row[2].ToString());
@@ -62,25 +62,6 @@ namespace BundesligaVerwaltung.Model
 		#endregion
 
 		#region workers
-		public override List<string[]> GetKeys()
-		{
-			List<string[]> keys = base.GetKeys();
-			keys.Add(new[] { "teamid", "INTEGER" });
-			keys.Add(new[] { "opponentscore", "INTEGER" });
-			keys.Add(new[] { "score", "INTEGER" });
-			keys.Add(new[] { "opponentid", "INTEGER" });
-			return keys;
-		}
-
-		public override List<object> GetValues()
-		{
-			List<object> values = base.GetValues();
-			values.Add(TeamId);
-			values.Add(OpponentScore);
-			values.Add(Score);
-			values.Add(OpponentId);
-			return values;
-		}
 		#endregion
 	}
 }

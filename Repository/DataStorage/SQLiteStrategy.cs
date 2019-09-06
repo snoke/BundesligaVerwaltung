@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using BundesligaVerwaltung.Model;
+using System.Reflection;
 
 namespace BundesligaVerwaltung.Repository.DataStorage
 {
@@ -33,15 +34,13 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		private SQLiteConnection _dbConnection;
 		private SQLiteConnection dbConnection
 		{
-			get
+			get  
 			{
 				//lazy loading
-				if (_dbConnection == null)
-				{
+				if (_dbConnection == null) {
 					_dbConnection = new SQLiteConnection("Data Source =" + filename + "; Version = 3;");
 					_dbConnection.Open();
-				}
-				else { }
+				} else { }
 				return _dbConnection;
 			}
 		}
@@ -55,10 +54,10 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 		{
 			this.filename = filename;
         }
-		#endregion
+        #endregion
 
-		#region workers
-		private List<List<object>> query(string sql)
+        #region workers
+        private List<List<object>> query(string sql)
 		{
 			SQLiteCommand Command = new SQLiteCommand(sql, dbConnection);
 			SQLiteDataReader reader = Command.ExecuteReader();
@@ -82,35 +81,40 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
 		public override void SaveEntity(Entity e)
 		{
-			string sql = "REPLACE INTO " + e.GetType().Name + "(";
-			List<string[]> keys = e.GetKeys();
-			foreach (string[] k in keys)
+            Type eType = e.GetType();
+			string sql = "REPLACE INTO " + eType.Name + "(";
+            List<PropertyInfo> properties = eType.GetProperties().Reverse().ToList();
+			foreach (PropertyInfo property in properties)
 			{
-				sql += k[0] + ",";
+				sql += property.Name.ToLower() + ",";
 			}
 			sql = sql.Substring(0, sql.Length - 1) + ") VALUES(";
-			int i = 0;
-			foreach (object v in e.GetValues())
-			{
-				if (keys[i][1] == "STRING")
-				{
-					sql += "'" + v.ToString() + "',";
-				}
-				else
-				{
-					sql += v.ToString() + ",";
-				}
-				i++;
-			}
+            foreach (PropertyInfo property in properties)
+            {
+                object v = property.GetValue(e,null);
+
+                if (null == v)
+                {
+                    sql += "null" + ",";
+
+                }
+                else
+                {
+                    sql += "'" + v.ToString() + "',";
+
+                }
+            }
+
 			sql = sql.Substring(0, sql.Length - 1) + ");";
+        //    Console.WriteLine(sql);
 			query(sql);
 		}
 
 		public void SaveEntities(Entity[] entities)
 		{
-			foreach (Entity e in entities)
+			foreach (Entity entity in entities)
 			{
-				SaveEntity(e);
+				SaveEntity(entity);
 			}
 		}
 
