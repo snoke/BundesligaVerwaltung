@@ -51,14 +51,6 @@ namespace BundesligaVerwaltung.Model
 			Score = score;
 			OpponentScore = opponentScore;
 		}
-
-		public Match(List<object> row) : base((int) Int32.Parse(row[0].ToString()))
-		{
-			TeamId = Int32.Parse(row[1].ToString());
-			OpponentId = Int32.Parse(row[2].ToString());
-			Score = Int32.Parse(row[3].ToString());
-			OpponentScore = Int32.Parse(row[4].ToString());
-		}
 		#endregion
 
 		#region workers

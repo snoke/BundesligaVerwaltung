@@ -57,18 +57,18 @@ namespace BundesligaVerwaltung.Repository.DataStorage
         #endregion
 
         #region workers
-        private List<List<object>> query(string sql)
+        private List<List<string>> query(string sql)
 		{
 			SQLiteCommand Command = new SQLiteCommand(sql, dbConnection);
 			SQLiteDataReader reader = Command.ExecuteReader();
-			List<List<object>> rows = new List<List<object>>();
+			List<List<string>> rows = new List<List<string>>();
 
 			while (reader.Read())
 			{
-				List<object> row = new List<object>();
+				List<string> row = new List<string>();
 				for (int i = 0; i < reader.FieldCount; i++)
 				{
-					row.Add(reader[i]);
+					row.Add(reader[i].ToString());
 				}
 				rows.Add(row);
 			}
@@ -120,14 +120,15 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
 		public override List<Entity> LoadEntities(Type entityType)
 		{
-            List<List<object>> entities = query("SELECT * FROM " + entityType.Name + ";");
+            List<List<string>> entities = query("SELECT * FROM " + entityType.Name + ";");
             List<Entity> list = new List<Entity>();
-			foreach (List<object> row in entities)
+			foreach (List<string> row in entities)
 			{
-				list.Add((Entity)Activator.CreateInstance(entityType, row));
+				list.Add((Entity)Activator.CreateInstance(entityType, row.ToArray()));
 			}
 			return list.ToList();
 		}
+
 		public override void RemoveEntity(Entity entity)
 		{
 			query("DELETE FROM " + entity.GetType().Name + " WHERE id=" + entity.id + ";");

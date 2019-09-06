@@ -14,18 +14,18 @@ namespace BundesligaVerwaltung.Model
 		#endregion
 
 		#region constructors
-		public Team(List<object> row) : base((int)Int32.Parse(row[0].ToString()))
-		{
-			Name = (string)row[1];
-		}
 		public Team(int? id, string name) : base(id)
 		{
 			Name = name;
-		}
-		#endregion
+        }
+        public Team(params string[] args) : base(Int32.Parse(args[0]))
+        {
+            this.Name = args[1];
+        }
+        #endregion
 
-		#region workers
-		#endregion
-	}
+        #region workers
+        #endregion
+    }
 }
 

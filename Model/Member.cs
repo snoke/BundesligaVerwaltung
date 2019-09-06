@@ -32,15 +32,16 @@ namespace BundesligaVerwaltung.Model
             Role = role;
         }
 
-		public Member(List<object> row) : base((int)Int32.Parse(row[0].ToString()))
-        {
-            Name = (string)row[1];
-            Teamid = Int32.Parse(row[2].ToString());
-            Role = (string)row[3];
-        }
-		#endregion
 
-		#region workers
-		#endregion
-	}
+        public Member(params string[] args) : base(Int32.Parse(args[0]))
+        {
+            this.Name = args[1];
+            Teamid = Int32.Parse(args[2]);
+            Role = args[3];
+        }
+        #endregion
+
+        #region workers
+        #endregion
+    }
 }
