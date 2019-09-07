@@ -6,54 +6,60 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-using System;
 using System.Collections.Generic;
 
 namespace BundesligaVerwaltung.Model
 {
-	public class Match : Entity
-	{
-		#region properties
-		private int teamId;
-		private int opponentId;
-		private int score;
-		private int opponentScore;
-		#endregion
+    public class Match : Entity
+    {
+        #region properties
+        private Team team;
+        private Team opponent;
+        private int score;
+        private int opponentScore;
+        #endregion
 
-		#region accessors
-		public int TeamId
-		{
-			get { return teamId; }
-			set { teamId = value; }
-		}
-		public int OpponentId
-		{
-			get { return opponentId; }
-			set { opponentId = value; }
-		}
-		public int Score
-		{
-			get { return score; }
-			set { score = value; }
-		}
-		public int OpponentScore
-		{
-			get { return opponentScore; }
-			set { opponentScore = value; }
-		}
-		#endregion
+        #region accessors
+        public Team Team
+        {
+            get { return team; }
+            set { team = value; }
+        }
+        public Team Opponent
+        {
+            get { return opponent; }
+            set { opponent = value; }
+        }
+        public int Score
+        {
+            get { return score; }
+            set { score = value; }
+        }
+        public int OpponentScore
+        {
+            get { return opponentScore; }
+            set { opponentScore = value; }
+        }
+        #endregion
 
-		#region constructors
-		public Match(int? id, int teamId, int opponentId, int score, int opponentScore) : base(id)
-		{
-			TeamId = teamId;
-			OpponentId = opponentId;
-			Score = score;
-			OpponentScore = opponentScore;
-		}
-		#endregion
+        #region constructors
+        public Match(int? id, Team team, Team opponent, int score, int opponentScore) : base(id)
+        {
+            Team = team;
+            Opponent = opponent;
+            Score = score;
+            OpponentScore = opponentScore;
+        }
+        public Match(List<object> args) : base((int)args[0])
+        {
+            OpponentScore = (int)args[4];
+            Score = (int)args[3];
+            Opponent = (Team)args[2];
+            Team = (Team)args[1];
+        }
+        #endregion
 
-		#region workers
-		#endregion
-	}
+        #region workers
+        #endregion
+    }
 }

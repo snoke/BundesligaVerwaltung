@@ -4,5 +4,5 @@
  */
 namespace SelectMenu
 {
-	public delegate void MenuChoiceCallable();
+    public delegate void MenuChoiceCallable();
 }

@@ -5,9 +5,9 @@
 
 namespace SelectMenu
 {
-	public interface StyleInterface
-	{
-		void ElementSelected(string caption);
-		void ElementNotSelected(string caption);
-	}
+    public interface StyleInterface
+    {
+        void ElementSelected(string caption);
+        void ElementNotSelected(string caption);
+    }
 }

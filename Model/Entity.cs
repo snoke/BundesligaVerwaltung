@@ -6,34 +6,31 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-using System;
-using System.Collections.Generic;
 
 namespace BundesligaVerwaltung.Model
 {
-	public abstract class Entity
-	{
-		#region properties
-		private int? _id;
-		#endregion
+    public abstract class Entity
+    {
+        #region properties
+        private int? _id;
+        #endregion
 
-		#region accessors
-		public int? id
-		{
-			get { return _id; }
-			set { _id = value; }
-		}
-		#endregion
+        #region accessors
+        public int? id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        #endregion
 
-		#region constructors
-		public Entity(int? id)
+        #region constructors
+        public Entity(int? id)
         {
             this.id = id;
         }
-		#endregion
+        #endregion
 
-		#region workers
-
-		#endregion
-	}
+        #region workers
+        #endregion
+    }
 }

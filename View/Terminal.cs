@@ -13,48 +13,48 @@ using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.View
 {
-	public class Terminal
-	{
-		#region properties
-		#endregion
+    public class Terminal
+    {
+        #region properties
+        #endregion
 
-		#region accessors
-		#endregion
+        #region accessors
+        #endregion
 
-		#region constructors
-		public Terminal()
-		{
-		}
+        #region constructors
+        public Terminal()
+        {
+        }
         #endregion
 
         #region workers
-        public string Scoreboard(List<Match> matches,List<Team> teams)
+        public string Scoreboard(List<Match> matches, List<Team> teams)
         {
 
             List<string[]> rows = new List<string[]>();
-            rows.Add(new string[] {
-                    "Mannschaft",
+            foreach (Team team in teams)
+            {
+                rows.Add(new string[] {
+                    team.Name,
+                    matches.Where(x => (x.Opponent.id == team.id || x.Team.id == team.id)).Count().ToString(),
+                    matches.Where(x => (x.Opponent.id == team.id && x.OpponentScore > x.Score) || (x.Team.id == team.id && x.Score > x.OpponentScore)).Count().ToString(),
+                    matches.Where(x => (x.Opponent.id == team.id || x.Team.id == team.id) && x.Score == x.OpponentScore).Count().ToString(),
+                    matches.Where(x => (x.Opponent.id == team.id && x.OpponentScore < x.Score) || (x.Team.id == team.id && x.Score < x.OpponentScore)).Count().ToString(),
+                    ((int)matches.Where(x => x.Opponent.id == team.id).Select(x => x.OpponentScore).Sum() + (int)matches.Where(x => x.Team.id == team.id).Select(x => x.Score).Sum()).ToString(),
+                    (matches.Where(x => (x.Opponent.id == team.id && x.OpponentScore > x.Score) || (x.Team.id == team.id && x.Score > x.OpponentScore)).Count()*3+matches.Where(x => (x.Opponent.id == team.id || x.Team.id == team.id) && x.Score == x.OpponentScore).Count()).ToString(),
+                });
+            }
+            List<string[]> header = new List<string[]> { new string[] { "Mannschaft",
+                    "Spiele",
                     "Siege",
                     "Unentschieden",
                     "Niederlagen",
-                   "Punkte",
-                });
-            foreach (Team team in teams)
-            {
-                int wins = matches.Where(x => (x.OpponentId == team.id && x.OpponentScore > x.Score) || (x.TeamId == team.id && x.Score > x.OpponentScore)).Count();
-                int draws = matches.Where(x => (x.OpponentId == team.id || x.TeamId == team.id) && x.Score == x.OpponentScore).Count();
-                int losses = matches.Where(x => (x.OpponentId == team.id && x.OpponentScore < x.Score) || (x.TeamId == team.id && x.Score < x.OpponentScore)).Count();
-                int points = wins * 3 + draws;
-
-                rows.Add(new string[] {
-                    team.Name,
-                    wins.ToString(),
-                    draws.ToString(),
-                    losses.ToString(),
-                   points.ToString(),
-                });
+                   "Tore",
+                   "Punkte"
             }
-            return this.Table(rows);
+        };
+             header.AddRange(rows.OrderByDescending(x => x[6]).ThenByDescending(x => x[5]).ToList());
+            return Table(header);
         }
 
         public string Table(List<string[]> rows)
@@ -62,19 +62,20 @@ namespace BundesligaVerwaltung.View
             string output = "";
 
             List<int> longest = new List<int>();
-            foreach (string[] row in rows) {
+            foreach (string[] row in rows)
+            {
                 while (longest.Count() < row.Count())
                 {
                     longest.Add(0);
                 }
-                for(int i = 0;i<row.Count(); i++)
-                if(longest[i]<row[i].Length)
-                {
-                    longest[i] = row[i].Length;
-                }
+                for (int i = 0; i < row.Count(); i++)
+                    if (longest[i] < row[i].Length)
+                    {
+                        longest[i] = row[i].Length;
+                    }
             }
 
-                foreach (string[] row in rows)
+            foreach (string[] row in rows)
             {
                 for (int i = 0; i < row.Length; i++)
                 {
@@ -84,7 +85,7 @@ namespace BundesligaVerwaltung.View
             }
             return output;
         }
-        public int Menu(string[] options,string header)
+        public int Menu(string[] options, string header)
         {
             return new SelectMenu.SelectMenu(options).setTitle(header).select();
         }
@@ -95,14 +96,7 @@ namespace BundesligaVerwaltung.View
         public int AskForInteger(string question, int intVal)
         {
             Console.Clear();
-            if (intVal != 0)
-            {
                 Console.Write(question + " :" + intVal);
-            }
-            else
-            {
-                Console.Write(question + " :");
-            }
             ConsoleKeyInfo cki = Console.ReadKey(false);
             if (cki.Key.ToString() == "Backspace")
             {
@@ -138,8 +132,7 @@ namespace BundesligaVerwaltung.View
         public string AskForString(string question)
         {
             Console.WriteLine(question);
-            string input = Console.ReadLine();
-            return input;
+            return Console.ReadLine();
         }
         #endregion
     }

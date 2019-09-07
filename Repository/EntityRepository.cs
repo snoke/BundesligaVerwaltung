@@ -9,117 +9,137 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using BundesligaVerwaltung.Model;
+using BundesligaVerwaltung.Migration;
+using BundesligaVerwaltung.Repository.DataStorage;
 
 namespace BundesligaVerwaltung.Repository
 {
-	public class EntityRepository
-	{
-		#region properties
-		private DataStorage.DataStorage _dataStorage;
-		private List<Team> _teams;
-		private List<Member> _members;
-		private List<Match> _matches;
-		#endregion
+    public class EntityRepository
+    {
+        #region properties
+        private DataStorage.DataStorage _dataStorage;
+        private Dictionary<string, Type> _types;
+        private Dictionary<Type, List<Entity>> _entities;
 
-		#region accessors
-		private DataStorage.DataStorage dataStorage
-		{
-			get { return _dataStorage; }
-			set { _dataStorage = value; }
-		}
+        #endregion
 
-		public List<Team> Teams
-		{
-			get
-            {
-                //lazy loading
-                if (_teams == null)
-                {
-                    _teams = this.Load(Type.GetType("BundesligaVerwaltung.Model.Team")).Cast<Team>().ToList();
-                }
-                else { }
-                return _teams;
-			}
-			set { _teams = value; }
-		}
-		public List<Member> Members
-		{
-			get
-            {
-                //lazy loading
-                if (_members == null)
-                {
-                    _members = this.Load(Type.GetType("BundesligaVerwaltung.Model.Member")).Cast<Member>().ToList();
-                }
-                else { }
-                return _members;
-			}
-			set { _members = value; }
-		}
-		public List<Match> Matches
-		{
-			get
-			{
-                //lazy loading
-                if (_matches == null)
-                {
-                    _matches = this.Load(Type.GetType("BundesligaVerwaltung.Model.Match")).Cast<Match>().ToList();
-                }
-                return _matches;
-            }
-            set { _matches = value; }
+        #region accessors
+        private Dictionary<string, Type> Types
+        {
+            get { return _types; }
+            set { _types = value; }
         }
-		#endregion
+        public Dictionary<Type, List<Entity>> Entities
+        {
+            get {
+                return _entities;
+            }
+            set { _entities = value; }
+        }
+
+        private DataStorage.DataStorage dataStorage
+        {
+            get { return _dataStorage; }
+            set { _dataStorage = value; }
+        }
+        #endregion
 
 
-		#region constructors
-		public EntityRepository(DataStorage.DataStorage dataStorage)
-		{
-			this.dataStorage = dataStorage;
-		}
+        #region constructors
+        public EntityRepository(Dictionary<string, Type> types,bool debug)
+        {
+            dataStorage = new SQLiteStrategy("db.sqlite", types,debug);
+            this.Types = types;
+            this.DefaultMigration();
+            this.Refresh();
+        }
         #endregion
 
         #region workers
-        public void Reload()
+        public void Refresh()
         {
-            this.Members = null;
-            this.Teams = null;
-            this.Matches = null;
-        }
-        private void Reload(Type entityType)
-        {
-            if (entityType.Name == "Member")
+            this.Entities = new Dictionary<Type, List<Entity>>();
+            foreach (KeyValuePair<string, Type> entry in this.Types)
             {
-                this.Members = null;
-            }
-            else if (entityType.Name == "Team")
-            {
-
-                this.Teams = null;
-            }
-            else if (entityType.Name == "Match")
-            {
-
-                this.Matches = null;
-            } else
-            {
-
+                this.Entities.Add(entry.Value, Load(entry.Value));
             }
         }
         public List<Entity> Load(Type entityType)
         {
-            return dataStorage.LoadEntities(entityType);
+            List<List<string>> rows = dataStorage.LoadEntities(entityType);
+            List<Entity> list = new List<Entity>();
+            List<PropertyInfo> properties = entityType.GetProperties().Reverse().ToList();
+
+            //reflection lädt die erweiternden eigenschaften zuerst und die geerbten eigenschaften (id !!!) zuletzt!
+            //die sonstige reihenfolge bleibt dabei bestehen
+            //Todo:anderes matching für tiefere abstraktion
+            List<PropertyInfo> _properties = new List<PropertyInfo>();
+            _properties.Add(properties[0]);
+            properties.Reverse();
+            _properties.AddRange(properties);
+            _properties.RemoveAt(_properties.Count() - 1);
+
+            foreach (List<string> row in rows)
+            {
+                List<object> values = new List<object>();
+                for (int i = 0; i < row.Count(); i++)
+                {
+                    PropertyInfo property = _properties[i];
+
+                    string type = property.PropertyType.ToString();
+                    if (property.Name == "id")
+                    {
+                        values.Add((int?)Int32.Parse((string)row[i]));
+                    }
+                    else
+                    {
+                        if (type == "System.String")
+                        {
+                            values.Add((string)row[i]);
+                        }
+                        else if (type == "System.Int32")
+                        {
+                            values.Add((int)Int32.Parse((string)row[i]));
+                        }
+                        else if (type == this.Entities.SingleOrDefault(o => o.Key.FullName == type).Key.FullName)
+                        {
+                            string val = row[i];
+                            int mapId = Int32.Parse((string)val);
+                            values.Add(this.Entities[Type.GetType(type)].SingleOrDefault(x => x.id == mapId));
+
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Mapping failed of type " + type);
+                        }
+                    }
+
+                }
+                List<object> parameters = values.ToList();
+                list.Add((Entity)Activator.CreateInstance(entityType, parameters)); 
+            }
+            return list;
         }
         public void Remove(Entity entity)
         {
             dataStorage.RemoveEntity(entity);
-            Reload(entity.GetType());
         }
         public void Save(Entity entity)
         {
             dataStorage.SaveEntity(entity);
-            Reload(entity.GetType());
+        }
+        public void CreateSchema(Type entityType)
+        {
+            dataStorage.CreateSchema(entityType);
+        }
+        public void DefaultMigration()
+        {
+            new SchemaMigration(this).up();
+            new TeamsMigration(this).up();
+            new SpieltagEinsMigration(this).up();
+
         }
         #endregion
     }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace BundesligaVerwaltung.Model
 {
-    public class Team : Entity
+    public class Role : Entity
     {
         #region properties
         private string name;
@@ -12,11 +12,11 @@ namespace BundesligaVerwaltung.Model
         #endregion
 
         #region constructors
-        public Team(int? id, string name) : base(id)
+        public Role(int? id, string name) : base(id)
         {
             Name = name;
         }
-        public Team(List<object> args) : base((int)args[0])
+        public Role(List<object> args) : base((int)args[0])
         {
             Name = (string)args[1];
         }

@@ -5,25 +5,25 @@
 
 namespace SelectMenu
 {
-	public class German : LanguageInterface
-	{
-		#region properties
-		#endregion
+    public class German : LanguageInterface
+    {
+        #region properties
+        #endregion
 
-		#region accessors
-		#endregion
+        #region accessors
+        #endregion
 
-		#region constructors
-		public German()
-		{
-		}
-		#endregion
+        #region constructors
+        public German()
+        {
+        }
+        #endregion
 
-		#region workers
-		public string PageOfMaxPages(int page, int maxPages)
-		{
-			return "Seite " + page + " von " + maxPages;
-		}
-		#endregion
-	}
+        #region workers
+        public string PageOfMaxPages(int page, int maxPages)
+        {
+            return "Seite " + page + " von " + maxPages;
+        }
+        #endregion
+    }
 }

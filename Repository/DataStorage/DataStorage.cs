@@ -12,21 +12,22 @@ using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Repository.DataStorage
 {
-	public abstract class DataStorage
-	{
-		#region properties
-		#endregion
+    public abstract class DataStorage
+    {
+        #region properties
+        #endregion
 
-		#region accessors
-		#endregion
+        #region accessors
+        #endregion
 
-		#region constructors
-		#endregion
+        #region constructors
+        #endregion
 
         #region workers
-		public abstract List<Entity> LoadEntities(Type entityType);
+        public abstract List<List<string>> LoadEntities(Type entityType);
         public abstract void SaveEntity(Entity entity);
-		public abstract void RemoveEntity(Entity entity);
+        public abstract void RemoveEntity(Entity entity);
+        public abstract void CreateSchema(Type entityType);
         #endregion
     }
 }

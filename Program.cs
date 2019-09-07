@@ -9,14 +9,11 @@
 using BundesligaVerwaltung.Controller;
 namespace BundesligaVerwaltung
 {
-	internal class Program
-	{
-		public static void Main(string[] args)
-		{
-			// new TestController().Run();
-			new DefaultController().Run();
-			//      	DefaultController defaultController = new DefaultController();
-			//      	defaultController.Run();
-		}
-	}
+    internal class Program
+    {
+        public static void Main(string[] args)
+        {
+            new DefaultController().Run();
+        }
+    }
 }

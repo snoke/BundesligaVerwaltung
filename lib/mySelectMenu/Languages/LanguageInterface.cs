@@ -5,8 +5,8 @@
 
 namespace SelectMenu
 {
-	public interface LanguageInterface
-	{
-		string PageOfMaxPages(int page, int maxPages);
-	}
+    public interface LanguageInterface
+    {
+        string PageOfMaxPages(int page, int maxPages);
+    }
 }
