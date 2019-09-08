@@ -1,24 +1,22 @@
-﻿using System.Collections.Generic;
-namespace BundesligaVerwaltung.Model
+﻿namespace BundesligaVerwaltung.Model.Entities
 {
-    public class Role : Entity
+    public class League : Entity
     {
         #region properties
         private string name;
+        private int maximumTeams;
         #endregion
 
         #region accessors
         public string Name { get => name; set => name = value; }
+        public int MaximumTeams { get => maximumTeams; set => maximumTeams = value; }
         #endregion
 
         #region constructors
-        public Role(int? id, string name) : base(id)
+        public League(int? id, string name, int maximumTeams) : base(id)
         {
             Name = name;
-        }
-        public Role(List<object> args) : base((int)args[0])
-        {
-            Name = (string)args[1];
+            MaximumTeams = maximumTeams;
         }
         #endregion
 

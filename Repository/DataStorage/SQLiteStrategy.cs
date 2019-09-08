@@ -76,7 +76,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
         #endregion
 
         #region constructors
-        public SQLiteStrategy(string filename, Dictionary<string,Type> entityTypes,bool debug)
+        public SQLiteStrategy(string filename, Dictionary<string, Type> entityTypes, bool debug)
         {
             this.filename = filename;
             this.entityTypes = entityTypes;
@@ -87,10 +87,11 @@ namespace BundesligaVerwaltung.Repository.DataStorage
         #region workers
         private List<List<string>> query(string sql)
         {
-            if (this.debug)
+            if (debug)
             {
                 Console.WriteLine(sql);
-            } else
+            }
+            else
             {
 
             }
@@ -114,9 +115,9 @@ namespace BundesligaVerwaltung.Repository.DataStorage
             return rows;
         }
 
+        //Todo: umschreiben und SQLiteParameter nutzen um sqlinjection zu verhindern
         public override void SaveEntity(Entity e)
         {
-            //Todo Escape Strings against injections
             Type eType = e.GetType();
             string sql = "REPLACE INTO " + eType.Name + "(";
             List<PropertyInfo> properties = eType.GetProperties().Reverse().ToList();
@@ -129,8 +130,6 @@ namespace BundesligaVerwaltung.Repository.DataStorage
             {
                 object v = property.GetValue(e, null);
 
-
-
                 if (null == v)
                 {
                     sql += "null" + ",";
@@ -139,9 +138,10 @@ namespace BundesligaVerwaltung.Repository.DataStorage
                 else if (v is Entity)
                 {
                     sql += "'" + ((Entity)v).id + "',";
-                  
 
-                } else
+
+                }
+                else
                 {
                     sql += "'" + v.ToString() + "',";
                 }
@@ -170,7 +170,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
         }
         public override void CreateSchema(Type eType)
         {
-            this.query("DROP TABLE IF EXISTS " + eType.Name);
+            query("DROP TABLE IF EXISTS " + eType.Name);
             string sql = "CREATE TABLE IF NOT EXISTS " + eType.Name + "(";
 
             List<PropertyInfo> properties = eType.GetProperties().Reverse().ToList();
@@ -179,8 +179,10 @@ namespace BundesligaVerwaltung.Repository.DataStorage
             //reflection lädt die erweiternden eigenschaften zuerst und die geerbten eigenschaften (id !!!) zuletzt!
             //die sonstige reihenfolge bleibt dabei bestehen
             //Todo:anderes matching für tiefere abstraktion
-            List<PropertyInfo> _properties = new List<PropertyInfo>();
-            _properties.Add(properties[0]);
+            List<PropertyInfo> _properties = new List<PropertyInfo>
+            {
+                properties[0]
+            };
             properties.Reverse();
             _properties.AddRange(properties);
             _properties.RemoveAt(_properties.Count() - 1);
@@ -199,18 +201,21 @@ namespace BundesligaVerwaltung.Repository.DataStorage
                         sql += property.Name.ToLower() + " TEXT,";
 
                     }
+                    else if (pType == "System.Boolean")
+                    {
+                        sql += property.Name.ToLower() + " BOOLEAN,";
+                    }
                     else if (pType == "System.Int32")
                     {
                         sql += property.Name.ToLower() + " INTEGER,";
                     }
-                    else if (pType == entityTypes.SingleOrDefault(o => o.Value.FullName == pType).Value.FullName)
+                    else if (entityTypes.Any(o => o.Value.FullName == pType))
                     {
                         sql += property.Name.ToLower() + " INTEGER,";
-
                     }
                     else
                     {
-                        throw new ArgumentException("Unsupported Property " + property.Name + "of type " + pType);
+                        throw new ArgumentException("Unsupported Property " + property.Name + " of type " + pType);
                     }
 
                 }

@@ -48,7 +48,7 @@ namespace SelectMenu
         public ConsoleKeyInfo SelectMenu(SelectElement[] selectElements, int maxElementsPerPage, int pos, int page, string[] title)
         {
             SelectElement[] elements = selectElements;
-            int maxPages = (int)Math.Ceiling((double)elements.Length / (double)maxElementsPerPage);
+            int maxPages = (int)Math.Ceiling(elements.Length / (double)maxElementsPerPage);
             while (true)
             {
                 header(title);

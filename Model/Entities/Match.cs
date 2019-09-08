@@ -6,9 +6,7 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-using System.Collections.Generic;
-
-namespace BundesligaVerwaltung.Model
+namespace BundesligaVerwaltung.Model.Entities
 {
     public class Match : Entity
     {
@@ -49,13 +47,6 @@ namespace BundesligaVerwaltung.Model
             Opponent = opponent;
             Score = score;
             OpponentScore = opponentScore;
-        }
-        public Match(List<object> args) : base((int)args[0])
-        {
-            OpponentScore = (int)args[4];
-            Score = (int)args[3];
-            Opponent = (Team)args[2];
-            Team = (Team)args[1];
         }
         #endregion
 

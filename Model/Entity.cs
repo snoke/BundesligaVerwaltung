@@ -9,6 +9,9 @@
 
 namespace BundesligaVerwaltung.Model
 {
+    //Diese Klasse beschreibt ein vom Repository speicherbares Objekt
+    //Eigenschaften können bei abgeleiteten Klassen nach belieben hinzugefügt werden und werden vom Repository erkannt.
+    //Unterstützte Typen hierfür sind bis jetzt: Strings, 32Bit-Integer, Boolean und andere Entity-Objekte (ORM)
     public abstract class Entity
     {
         #region properties

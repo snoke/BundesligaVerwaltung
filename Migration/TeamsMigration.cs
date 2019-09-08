@@ -1,19 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using BundesligaVerwaltung.Repository;
-using BundesligaVerwaltung.Model;
+using BundesligaVerwaltung.Model.Entities;
+using BundesligaVerwaltung.Repository.DataStorage;
+
 namespace BundesligaVerwaltung.Migration
 {
-    class TeamsMigration
+    internal class TeamsMigration
     {
-        private EntityRepository _repository;
-        public EntityRepository Repository { get => _repository; set => _repository = value; }
+        private DataStorage _dataStorage;
+        public DataStorage DataStorage { get => _dataStorage; set => _dataStorage = value; }
 
-        public TeamsMigration(EntityRepository repository)
+        private List<Team> _teams;
+        private List<League> _leagues;
+        public List<Team> Teams { get => _teams; set => _teams = value; }
+        public List<League> Leagues { get => _leagues; set => _leagues = value; }
+
+        public TeamsMigration(DataStorage dataStorage, List<Team> teams, List<League> leagues)
         {
-            this.Repository = repository;
+            DataStorage = dataStorage;
+            Teams = teams;
+            Leagues = leagues;
         }
 
 
@@ -21,24 +27,25 @@ namespace BundesligaVerwaltung.Migration
         {
             // Die Informationen entstammen der offiziellen Webseite des DFB und sind frei zugänglich
             // https://www.dfb.de/bundesliga
-            Repository.Save(new Team((int?)null, "FC Bayern München"));
-            Repository.Save(new Team((int?)null, "Borussia Dortmund"));
-            Repository.Save(new Team((int?)null, "RB Leipzig"));
-            Repository.Save(new Team((int?)null, "Bayer 04 Leverkusen"));
-            Repository.Save(new Team((int?)null, "Borussia Mönchengladbach"));
-            Repository.Save(new Team((int?)null, "TSG 1899 Hoffenheim"));
-            Repository.Save(new Team((int?)null, "VfL Wolfsburg"));
-            Repository.Save(new Team((int?)null, "Hertha BSC"));
-            Repository.Save(new Team((int?)null, "FC Schalke 04"));
-            Repository.Save(new Team((int?)null, "Eintracht Frankfurt"));
-            Repository.Save(new Team((int?)null, "SV Werder Bremen"));
-            Repository.Save(new Team((int?)null, "1.FSV Mainz 05"));
-            Repository.Save(new Team((int?)null, "FC Augsburg"));
-            Repository.Save(new Team((int?)null, "SC Freiburg"));
-            Repository.Save(new Team((int?)null, "1.FC Köln"));
-            Repository.Save(new Team((int?)null, "Fortuna Düsseldorf"));
-            Repository.Save(new Team((int?)null, "1.FC Union Berlin"));
-            Repository.Save(new Team((int?)null, "SC Paderborn 07"));
+            League league = Leagues.Single(x => x.id == 1);
+            DataStorage.SaveEntity(new Team(null, "FC Bayern München", league));
+            DataStorage.SaveEntity(new Team(null, "Borussia Dortmund", league));
+            DataStorage.SaveEntity(new Team(null, "RB Leipzig", league));
+            DataStorage.SaveEntity(new Team(null, "Bayer 04 Leverkusen", league));
+            DataStorage.SaveEntity(new Team(null, "Borussia Mönchengladbach", league));
+            DataStorage.SaveEntity(new Team(null, "TSG 1899 Hoffenheim", league));
+            DataStorage.SaveEntity(new Team(null, "VfL Wolfsburg", league));
+            DataStorage.SaveEntity(new Team(null, "Hertha BSC", league));
+            DataStorage.SaveEntity(new Team(null, "FC Schalke 04", league));
+            DataStorage.SaveEntity(new Team(null, "Eintracht Frankfurt", league));
+            DataStorage.SaveEntity(new Team(null, "SV Werder Bremen", league));
+            DataStorage.SaveEntity(new Team(null, "1.FSV Mainz 05", league));
+            DataStorage.SaveEntity(new Team(null, "FC Augsburg", league));
+            DataStorage.SaveEntity(new Team(null, "SC Freiburg", league));
+            DataStorage.SaveEntity(new Team(null, "1.FC Köln", league));
+            DataStorage.SaveEntity(new Team(null, "Fortuna Düsseldorf", league));
+            DataStorage.SaveEntity(new Team(null, "1.FC Union Berlin", league));
+            DataStorage.SaveEntity(new Team(null, "SC Paderborn 07", league));
         }
 
     }

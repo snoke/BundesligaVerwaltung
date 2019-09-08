@@ -1,34 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BundesligaVerwaltung.Repository;
-using BundesligaVerwaltung.Model;
+using BundesligaVerwaltung.Model.Entities;
+using BundesligaVerwaltung.Repository.DataStorage;
+
 namespace BundesligaVerwaltung.Migration
 {
-    class SchemaMigration
+    internal class SchemaMigration
     {
-        private EntityRepository _repository;
-        public EntityRepository Repository { get => _repository; set => _repository = value; }
+        private DataStorage _dataStorage;
+        private Dictionary<string, Type> _types;
+        public DataStorage DataStorage { get => _dataStorage; set => _dataStorage = value; }
+        public Dictionary<string, Type> Types { get => _types; set => _types = value; }
 
-        public SchemaMigration(EntityRepository repository)
+        public SchemaMigration(DataStorage dataStorage, Dictionary<string, Type> types)
         {
-            this.Repository = repository;
+            DataStorage = dataStorage;
+            Types = types;
         }
 
 
         public void up()
         {
-            Repository.CreateSchema(Type.GetType("BundesligaVerwaltung.Model.Member"));
-            Repository.CreateSchema(Type.GetType("BundesligaVerwaltung.Model.Match"));
-            Repository.CreateSchema(Type.GetType("BundesligaVerwaltung.Model.Team"));
-            Repository.CreateSchema(Type.GetType("BundesligaVerwaltung.Model.Role"));
+            foreach (KeyValuePair<string, Type> type in Types)
+            {
+                DataStorage.CreateSchema(type.Value);
+            }
 
-            Repository.Save(new Role((int?)null, "Spieler"));
-            Repository.Save(new Role((int?)null, "Trainer"));
-            Repository.Save(new Role((int?)null, "Physio"));
+            DataStorage.SaveEntity(new Role(null, "Spieler"));
+            DataStorage.SaveEntity(new Role(null, "Trainer"));
+            DataStorage.SaveEntity(new Role(null, "Physio"));
+            DataStorage.SaveEntity(new League(null, "Bundesliga", 18));
 
         }
-        
+
     }
 }

@@ -1,90 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using BundesligaVerwaltung.Repository;
-using BundesligaVerwaltung.Model;
+using BundesligaVerwaltung.Model.Entities;
+using BundesligaVerwaltung.Repository.DataStorage;
+
 namespace BundesligaVerwaltung.Migration
 {
-    class SpieltagEinsMigration
+    internal class SpieltagEinsMigration
     {
-        private EntityRepository _repository;
-        public EntityRepository Repository { get => _repository; set => _repository = value; }
+        private DataStorage _dataStorage;
+        public DataStorage DataStorage { get => _dataStorage; set => _dataStorage = value; }
 
-        public SpieltagEinsMigration(EntityRepository repository)
+        private List<Team> _teams;
+        public List<Team> Teams { get => _teams; set => _teams = value; }
+
+        public SpieltagEinsMigration(DataStorage dataStorage, List<Team> teams)
         {
-            this.Repository = repository;
+            DataStorage = dataStorage;
+            Teams = teams;
         }
 
         public void up()
         {
             // Die Informationen entstammen offiziellen Webseite des DFB und sind frei zugänglich!
             // https://www.dfb.de/bundesliga
-            List<Team> teams = Repository.Load(Type.GetType("BundesligaVerwaltung.Model.Team")).Cast<Team>().ToList();
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "FC Bayern München"),
-                teams.SingleOrDefault(x => x.Name == "Hertha BSC"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "FC Bayern München"),
+                Teams.Single(x => x.Name == "Hertha BSC"),
                 2,
                 2
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "Borussia Dortmund"),
-                teams.SingleOrDefault(x => x.Name == "FC Augsburg"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "Borussia Dortmund"),
+                Teams.Single(x => x.Name == "FC Augsburg"),
                 5,
                 1
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "Bayer 04 Leverkusen"),
-                teams.SingleOrDefault(x => x.Name == "SC Paderborn 07"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "Bayer 04 Leverkusen"),
+                Teams.Single(x => x.Name == "SC Paderborn 07"),
                 3,
                 2
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "VfL Wolfsburg"),
-                teams.SingleOrDefault(x => x.Name == "1.FC Köln"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "VfL Wolfsburg"),
+                Teams.Single(x => x.Name == "1.FC Köln"),
                 2,
                 1
 
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "SV Werder Bremen"),
-                teams.SingleOrDefault(x => x.Name == "Fortuna Düsseldorf"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "SV Werder Bremen"),
+                Teams.Single(x => x.Name == "Fortuna Düsseldorf"),
                 1,
                 3
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "SC Freiburg"),
-                teams.SingleOrDefault(x => x.Name == "1.FSV Mainz 05"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "SC Freiburg"),
+                Teams.Single(x => x.Name == "1.FSV Mainz 05"),
                 3, 0
 
 
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "Borussia Mönchengladbach"),
-                teams.SingleOrDefault(x => x.Name == "FC Schalke 04"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "Borussia Mönchengladbach"),
+                Teams.Single(x => x.Name == "FC Schalke 04"),
                 0, 0
 
 
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "Eintracht Frankfurt"),
-                teams.SingleOrDefault(x => x.Name == "TSG 1899 Hoffenheim"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "Eintracht Frankfurt"),
+                Teams.Single(x => x.Name == "TSG 1899 Hoffenheim"),
                 1, 0
 
 
             ));
-            Repository.Save(new Match(
-                (int?)null,
-                teams.SingleOrDefault(x => x.Name == "1.FC Union Berlin"),
-                teams.SingleOrDefault(x => x.Name == "RB Leipzig"),
+            DataStorage.SaveEntity(new Match(
+                null,
+                Teams.Single(x => x.Name == "1.FC Union Berlin"),
+                Teams.Single(x => x.Name == "RB Leipzig"),
                 0, 4
             ));
 
