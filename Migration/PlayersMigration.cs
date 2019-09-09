@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BundesligaVerwaltung.Model.Entities;
-using BundesligaVerwaltung.Repository.DataStorage;
+using BundesligaVerwaltung.Repository;
 
 namespace BundesligaVerwaltung.Migration
 {
     internal class PlayersMigration
     {
-        private DataStorage _dataStorage;
-        public DataStorage DataStorage { get => _dataStorage; set => _dataStorage = value; }
+        private EntityRepository _repository;
+        public EntityRepository Repository { get => _repository; set => _repository = value; }
 
         private List<Team> _teams;
         public List<Team> Teams { get => _teams; set => _teams = value; }
@@ -16,9 +16,9 @@ namespace BundesligaVerwaltung.Migration
         private List<Role> _roles;
         public List<Role> Roles { get => _roles; set => _roles = value; }
 
-        public PlayersMigration(DataStorage dataStorage, List<Team> teams, List<Role> roles)
+        public PlayersMigration(EntityRepository repository, List<Team> teams, List<Role> roles)
         {
-            DataStorage = dataStorage;
+            Repository = repository;
             Teams = teams;
             Roles = roles;
         }
@@ -27,7 +27,7 @@ namespace BundesligaVerwaltung.Migration
 
             foreach (string member in members)
             {
-                DataStorage.SaveEntity(new Member(null, member, team, role));
+                Repository.Save(new Member(null, member, team, role));
             }
         }
         public void up()

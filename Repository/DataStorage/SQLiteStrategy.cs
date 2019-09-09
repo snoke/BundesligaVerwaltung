@@ -15,7 +15,7 @@ using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Repository.DataStorage
 {
-    public class SQLiteStrategy : DataStorage
+    public class SQLiteStrategy : EntityRepository
     {
         #region properties
 
@@ -116,7 +116,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
         }
 
         //Todo: umschreiben und SQLiteParameter nutzen um sqlinjection zu verhindern
-        public override void SaveEntity(Entity e)
+        public override int SaveEntity(Entity e)
         {
             Type eType = e.GetType();
             string sql = "REPLACE INTO " + eType.Name + "(";
@@ -149,6 +149,14 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
             sql = sql.Substring(0, sql.Length - 1) + ");";
             query(sql);
+            if (e.id==null)
+            {
+                return Int32.Parse(query("SELECT id FROM " + eType.Name + " WHERE id = (SELECT MAX(id) FROM " + eType.Name + ");").Single().First());
+
+            } else
+            {
+                return (int)e.id;
+            }
         }
 
         public void SaveEntities(Entity[] entities)
@@ -159,11 +167,14 @@ namespace BundesligaVerwaltung.Repository.DataStorage
             }
         }
 
+        public override int GetNextId(Type entityType)
+        {
+            return Int32.Parse(query("SELECT id FROM " + entityType.Name + " WHERE id = (SELECT MAX(id) FROM " + entityType.Name + ");").Single().First()+1);
+        }
         public override List<List<string>> LoadEntities(Type entityType)
         {
             return query("SELECT * FROM " + entityType.Name + ";");
         }
-
         public override void RemoveEntity(Entity entity)
         {
             query("DELETE FROM " + entity.GetType().Name + " WHERE id=" + entity.id + ";");

@@ -7,12 +7,12 @@ namespace BundesligaVerwaltung.Migration
 {
     internal class SchemaMigration
     {
-        private DataStorage _dataStorage;
+        private EntityRepository _dataStorage;
         private Dictionary<string, Type> _types;
-        public DataStorage DataStorage { get => _dataStorage; set => _dataStorage = value; }
+        public EntityRepository DataStorage { get => _dataStorage; set => _dataStorage = value; }
         public Dictionary<string, Type> Types { get => _types; set => _types = value; }
 
-        public SchemaMigration(DataStorage dataStorage, Dictionary<string, Type> types)
+        public SchemaMigration(EntityRepository dataStorage, Dictionary<string, Type> types)
         {
             DataStorage = dataStorage;
             Types = types;
@@ -25,11 +25,6 @@ namespace BundesligaVerwaltung.Migration
             {
                 DataStorage.CreateSchema(type.Value);
             }
-
-            DataStorage.SaveEntity(new Role(null, "Spieler"));
-            DataStorage.SaveEntity(new Role(null, "Trainer"));
-            DataStorage.SaveEntity(new Role(null, "Physio"));
-            DataStorage.SaveEntity(new League(null, "Bundesliga", 18));
 
         }
 

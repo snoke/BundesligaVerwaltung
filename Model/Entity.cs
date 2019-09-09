@@ -34,6 +34,10 @@ namespace BundesligaVerwaltung.Model
         #endregion
 
         #region workers
+        public Entity Clone()
+        {
+            return (Entity)this.MemberwiseClone();
+        }
         #endregion
     }
 }

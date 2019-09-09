@@ -12,7 +12,7 @@ using BundesligaVerwaltung.Model;
 
 namespace BundesligaVerwaltung.Repository.DataStorage
 {
-    public abstract class DataStorage
+    public abstract class EntityRepository
     {
         #region properties
         #endregion
@@ -25,7 +25,10 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
         #region workers
         public abstract List<List<string>> LoadEntities(Type entityType);
-        public abstract void SaveEntity(Entity entity);
+
+        //id = null bedeuted latest id
+        public abstract int SaveEntity(Entity entity);
+        public abstract int GetNextId(Type entityType);
         public abstract void RemoveEntity(Entity entity);
         public abstract void CreateSchema(Type entityType);
         #endregion
