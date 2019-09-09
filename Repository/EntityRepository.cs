@@ -211,7 +211,7 @@ namespace BundesligaVerwaltung.Repository
         public Entity Save(Entity entity)
         {
             entity = SetEntity(entity);
-            Mementos.Add(new Dictionary<int, Entity>()
+            Mementos.Add(new Dictionary<bool, Entity>()
                 {
                     { true, entity.Clone() },
                 }
@@ -224,7 +224,7 @@ namespace BundesligaVerwaltung.Repository
             dataStorage.RemoveEntity(entity);
             Entities[entity.GetType()].Remove(entity);
 
-            Mementos.Add(new Dictionary<int, Entity>()
+            Mementos.Add(new Dictionary<bool, Entity>()
                 {
                     { false, entity },
                 }
