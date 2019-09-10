@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BundesligaVerwaltung.Model;
 using BundesligaVerwaltung.Model.Entities;
 using BundesligaVerwaltung.Repository;
 using BundesligaVerwaltung.View;
@@ -105,7 +106,7 @@ namespace BundesligaVerwaltung.Controller
             };
             Repository = new EntityRepository(EntityTypes, debug);
             //Repository.DefaultMigration();
-            Repository.Refresh();
+            Repository.Pull();
         }
         #endregion
 
@@ -116,7 +117,8 @@ namespace BundesligaVerwaltung.Controller
                 new string[] { "Tabelle aktualisieren", "zurück zum Hauptmenü" },
                 Terminal.Scoreboard(Matches, Teams) + "\nBitte wählen"))
             {
-                Repository.Refresh();
+                Repository.Flush();
+                Repository.Pull();
                 Scoreboard();
             }
             else { }
@@ -166,7 +168,7 @@ namespace BundesligaVerwaltung.Controller
                             Terminal.AskForInteger("Gegentore Tore eingeben")
                         );
                         Repository.Save(match);
-                        Repository.Flush();
+                        
 
                     }
                     else if (choice == 2)
@@ -175,12 +177,12 @@ namespace BundesligaVerwaltung.Controller
                         if (Teams.Count() < League.MaximumTeams)
                         {
                             Repository.Save(new Team(null, Terminal.AskForString("Team Name"), League));
-                            Repository.Flush();
+                            
 
                         }
                         else
                         {
-                            Terminal.Message("Maximal 18 Teams");
+                            Terminal.Message("Maximal "+League.MaximumTeams+" Teams");
                         }
                     }
                     else if (choice == 3)
@@ -189,7 +191,7 @@ namespace BundesligaVerwaltung.Controller
                         Team team = Teams[Terminal.Menu(Teams.Select(i => i.Name).ToArray(), "Team löschen")];
                         team.League = null;
                         Repository.Save(team);
-                        Repository.Flush();
+                        
                     }
                     else if (choice == 4)
                     {
@@ -201,7 +203,7 @@ namespace BundesligaVerwaltung.Controller
                                 Teams[Terminal.Menu(Teams.Select(x => x.Name).ToArray(), "Bitte Team wählen")],
                                 Roles[Terminal.Menu(Roles.Select(x => x.Name).ToArray(), "Bitte Rolle wählen")])
                             );
-                        Repository.Flush();
+                        
                     }
                     else if (choice == 5)
                     {
@@ -211,7 +213,7 @@ namespace BundesligaVerwaltung.Controller
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = Teams.Where(x => x != member.Team).ToArray()[Terminal.Menu(Teams.Where(x => x != member.Team).Select(x => x.Name).ToArray(), "Bitte wählen")];
                         Repository.Save(member);
-                        Repository.Flush();
+                        
                     }
                     else if (choice == 6)
                     {
@@ -221,13 +223,14 @@ namespace BundesligaVerwaltung.Controller
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = null;
                         Repository.Save(member);
-                        Repository.Flush();
+                        
                     }
                     else
                     { }
                     MainMenu();
                 }
                 else {
+                    Repository.Flush();
                 }
 
             }

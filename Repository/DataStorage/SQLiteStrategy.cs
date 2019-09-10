@@ -169,7 +169,15 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
         public override int GetNextId(Type entityType)
         {
-            return Int32.Parse(query("SELECT id FROM " + entityType.Name + " WHERE id = (SELECT MAX(id) FROM " + entityType.Name + ");").Single().First()+1);
+            List<List<string>> Result = query("SELECT id FROM " + entityType.Name + " WHERE id = (SELECT MAX(id) FROM " + entityType.Name + ");");
+            if (Result.Any())
+            {
+                return Int32.Parse(Result.Single().First() + 1);
+
+            } else
+            {
+                return 1;
+            }
         }
         public override List<List<string>> LoadEntities(Type entityType)
         {

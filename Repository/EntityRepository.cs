@@ -25,13 +25,13 @@ namespace BundesligaVerwaltung.Repository
         private Dictionary<Type, int> _nextId;
         private Dictionary<Type, List<Entity>> _entities;
 
-        //Der Key eines jeden Mementos enthält den "alive"-Zustand und bestimmt ob diese objekt gespeichert oder gelöscht wird
-        private List<Dictionary<bool, Entity>> _mementos; 
+        //Der Value eines jeden Mementos enthält den "alive"-Zustand und bestimmt ob diese objekt gespeichert oder gelöscht wird
+        private List<Dictionary<Entity,bool>> _mementos; 
 
         #endregion
 
         #region accessors
-        private List<Dictionary<bool, Entity>> Mementos //Logs von Entityzuständen
+        private List<Dictionary<Entity,bool>> Mementos //Logs von Entityzuständen
         {
             get { return _mementos; }
             set { _mementos = value; }
@@ -70,10 +70,11 @@ namespace BundesligaVerwaltung.Repository
             Types = types;
             Entities = new Dictionary<Type, List<Entity>>();
             NextId = new Dictionary<Type,int>();
-            Mementos = new List<Dictionary<bool, Entity>>();
+            Mementos = new List<Dictionary<Entity,bool>>();
             foreach (KeyValuePair<string, Type> entry in Types)
             {
                 NextId[entry.Value] = dataStorage.GetNextId(entry.Value);
+                //NextId[entry.Value] = 1;
                 Entities[entry.Value] = new List<Entity>();
             }
         }
@@ -86,7 +87,7 @@ namespace BundesligaVerwaltung.Repository
             NextId[eType]++;
             return id;
         }
-        public void Refresh()
+        public void Pull()
         {
             foreach (KeyValuePair<string, Type> entry in Types)
             {
@@ -96,28 +97,31 @@ namespace BundesligaVerwaltung.Repository
         }
         public void Flush() //Speichert den letzten Zustand aller geänderten Objekte in die Datenbank und leert die Mementos
         {
-            foreach (Dictionary<bool, Entity> dictionary in Mementos)
+            foreach (Dictionary<Entity,bool> dictionary in Mementos)
             {
                 List<int> idHandled = new List<int>();
-                foreach (KeyValuePair<bool, Entity> entry in dictionary.Reverse())
+                foreach (KeyValuePair<Entity,bool> entry in dictionary.Reverse())
                 {
-                    if (entry.Value.id!=null && idHandled.Contains((int)entry.Value.id))
+
+                    Entity entity = entry.Key;
+                    bool alive = entry.Value;
+                    if (entity.id!=null && idHandled.Contains((int)entity.id))
                     {
                         continue;
-                    } else if (entry.Key == false)
+                    } else if (alive == false)
                     {
-                        this.dataStorage.RemoveEntity(entry.Value);
-                        idHandled.Add((int)entry.Value.id);
-                        Entities[entry.Value.GetType()].Remove(entry.Value);
+                        this.dataStorage.RemoveEntity(entity);
+                        idHandled.Add((int)entity.id);
+                        Entities[entry.Value.GetType()].Remove(entity);
                     }
                     else
                     {
-                        entry.Value.id = this.dataStorage.SaveEntity(entry.Value);
-                        idHandled.Add((int)entry.Value.id);
+                        entity.id = this.dataStorage.SaveEntity(entity);
+                        idHandled.Add((int)entity.id);
                     }
                 }
             }
-            Mementos = new List<Dictionary<bool, Entity>>();
+            Mementos = new List<Dictionary<Entity, bool>>();
         }
 
         private Entity CreateInstance(Type entityType, List<object> parameters)
@@ -181,7 +185,6 @@ namespace BundesligaVerwaltung.Repository
                     {
                         throw new ArgumentException("(ORM) Mapping failed of type " + type);
                     }
-
                 }
                 CreateInstance(entityType, values);
             }
@@ -211,9 +214,9 @@ namespace BundesligaVerwaltung.Repository
         public Entity Save(Entity entity)
         {
             entity = SetEntity(entity);
-            Mementos.Add(new Dictionary<bool, Entity>()
+            Mementos.Add(new Dictionary< Entity, bool>()
                 {
-                    { true, entity.Clone() },
+                    { entity.Clone(),true },
                 }
             );
             //this.dataStorage.SaveEntity(entity);
@@ -224,9 +227,9 @@ namespace BundesligaVerwaltung.Repository
             dataStorage.RemoveEntity(entity);
             Entities[entity.GetType()].Remove(entity);
 
-            Mementos.Add(new Dictionary<bool, Entity>()
+            Mementos.Add(new Dictionary<Entity, bool>()
                 {
-                    { false, entity },
+                    { entity,false},
                 }
             );
             Flush();
@@ -247,12 +250,11 @@ namespace BundesligaVerwaltung.Repository
             List<Team> teams = Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Team")].Cast<Team>().ToList();
             List<League> leagues = Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.League")].Cast<League>().ToList();
             List<Role> roles = Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Role")].Cast<Role>().ToList();
-            Flush();
             new TeamsMigration(this, teams, leagues).up();
-            Flush();
             new PlayersMigration(this, Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Team")].Cast<Team>().ToList(), Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Role")].Cast<Role>().ToList()).up();
-            Flush();
+           
             new SpieltagEinsMigration(this, Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Team")].Cast<Team>().ToList()).up();
+
             Flush();
         }
         #endregion
