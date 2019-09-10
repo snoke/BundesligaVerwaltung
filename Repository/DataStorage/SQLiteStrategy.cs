@@ -172,7 +172,7 @@ namespace BundesligaVerwaltung.Repository.DataStorage
             List<List<string>> Result = query("SELECT id FROM " + entityType.Name + " WHERE id = (SELECT MAX(id) FROM " + entityType.Name + ");");
             if (Result.Any())
             {
-                return Int32.Parse(Result.Single().First() + 1);
+                return Int32.Parse(Result.Single().First()) + 1;
 
             } else
             {

@@ -83,6 +83,7 @@ namespace BundesligaVerwaltung.Repository
         #region workers
         private int GetNextId(Type eType)
         {
+
             int id = NextId[eType];
             NextId[eType]++;
             return id;
@@ -192,6 +193,7 @@ namespace BundesligaVerwaltung.Repository
 
         private Entity SetEntity(Entity entity)
         {
+
             if (entity.id!=null && Entities[entity.GetType()].Any(x => x.id == entity.id))
             {
                 int index = Entities[entity.GetType()].FindIndex(x => x.id == entity.id);

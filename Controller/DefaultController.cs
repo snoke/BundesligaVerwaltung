@@ -147,7 +147,7 @@ namespace BundesligaVerwaltung.Controller
                         //Spielergebnis hinzufügen
                         int? day = null; //spieltag
                         foreach (Team team in Teams)
-                        {
+                        { 
                             int teamMatchesAmount = Matches.Where(x => x.Team == team || x.Opponent == team).Count();
                             if (day == null || day > teamMatchesAmount)
                             {
