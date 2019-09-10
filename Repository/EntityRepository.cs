@@ -168,7 +168,7 @@ namespace BundesligaVerwaltung.Repository
                     {
                         values.Add(Boolean.Parse(row[i]));
                     }
-                    else if (Entities.Any(o => o.Key.FullName == type))
+                    else if (Entities.Any(o => o.Key.FullName == type)) //typo? else if (Entities.Any(o => o.Key == type)) 
                     {
                         string val = row[i];
                         if (val == "") //null objects
