@@ -8,8 +8,17 @@
         #endregion
 
         #region accessors
-        public string Name { get => name; set => name = value; }
-        public League League { get => league; set => league = value; }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public League League
+        {
+            get { return league; }
+            set { league = value; }
+        }
         #endregion
 
         #region constructors

@@ -8,10 +8,18 @@ namespace BundesligaVerwaltung.Migration
     internal class SpieltagEinsMigration
     {
         private EntityRepository _repository;
-        public EntityRepository Repository { get => _repository; set => _repository = value; }
+        private EntityRepository Repository
+        {
+            get { return _repository; }
+            set { _repository = value; }
+        }
 
         private List<Team> _teams;
-        public List<Team> Teams { get => _teams; set => _teams = value; }
+        private List<Team> Teams
+        {
+            get { return _teams; }
+            set { _teams = value; }
+        }
 
         public SpieltagEinsMigration(EntityRepository repository, List<Team> teams)
         {

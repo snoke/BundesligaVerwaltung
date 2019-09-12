@@ -36,7 +36,7 @@ namespace BundesligaVerwaltung.Model
         #region workers
         public Entity Clone()
         {
-            return (Entity)this.MemberwiseClone();
+            return (Entity)MemberwiseClone(); //keine deepcopy!!!1!elf
         }
         #endregion
     }

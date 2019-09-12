@@ -8,12 +8,26 @@ namespace BundesligaVerwaltung.Migration
     internal class TeamsMigration
     {
         private EntityRepository _repository;
-        public EntityRepository Repository { get => _repository; set => _repository = value; }
 
+        private EntityRepository Repository
+        {
+            get { return _repository; }
+            set { _repository = value; }
+        }
         private List<Team> _teams;
         private List<League> _leagues;
-        public List<Team> Teams { get => _teams; set => _teams = value; }
-        public List<League> Leagues { get => _leagues; set => _leagues = value; }
+
+        private List<Team> Teams
+        {
+            get { return _teams; }
+            set { _teams = value; }
+        }
+        private List<League> Leagues
+        {
+            get { return _leagues; }
+            set { _leagues = value; }
+        }
+
 
         public TeamsMigration(EntityRepository repository, List<Team> teams, List<League> leagues)
         {

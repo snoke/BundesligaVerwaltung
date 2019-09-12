@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BundesligaVerwaltung.Model;
 using BundesligaVerwaltung.Model.Entities;
 using BundesligaVerwaltung.Repository;
 using BundesligaVerwaltung.View;
+using BundesligaVerwaltung;
 namespace BundesligaVerwaltung.Controller
 {
-    internal class DefaultController
+    public class DefaultController
     {
         #region properties
         private bool _debug;
@@ -18,8 +18,7 @@ namespace BundesligaVerwaltung.Controller
         private EntityRepository repository;
         private Terminal terminal;
         #endregion
-
-
+        
         #region accessors
         private bool debug
         {
@@ -91,7 +90,8 @@ namespace BundesligaVerwaltung.Controller
         #region constructors
         public DefaultController()
         {
-            debug = true;
+          //  debug = false;
+          debug = true;
 
             Terminal = new Terminal();
 
@@ -125,6 +125,9 @@ namespace BundesligaVerwaltung.Controller
         }
         public void Run()
         {
+          //  this.Repository.CreateSchema(Type.GetType("BundesligaVerwaltung.Model.Entities.Match"));
+          //  this.Repository.Flush();
+          //  this.Repository.Pull();
             Terminal.SplashScreen();
             MainMenu();
         }
@@ -147,18 +150,31 @@ namespace BundesligaVerwaltung.Controller
                         //Spielergebnis hinzufügen
                         int? day = null; //spieltag
                         foreach (Team team in Teams)
-                        { 
+                        {
                             int teamMatchesAmount = Matches.Where(x => x.Team == team || x.Opponent == team).Count();
                             if (day == null || day > teamMatchesAmount)
                             {
                                 day = teamMatchesAmount;
                             }
+                            else
+                            {
+
+                            }
                         }
-                        List<Team> possibleTeams = Teams.Where(x=>  (Matches.Where(y => y.Team == x || y.Opponent == x).Count() <= day)).ToList();
+                        int gameday;
+                        if ((int?)day == null)
+                        {
+                            gameday = 1;
+                        } else
+                        {
+                            gameday = (int)day;
+                        }
+                        List<Team> possibleTeams = Teams.Where(x => (Matches.Where(y => y.Team == x || y.Opponent == x).Count() <= gameday)).ToList();
                         Team HomeTeam = possibleTeams[Terminal.Menu(possibleTeams.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
 
                         List<Team> possibleGuests = possibleTeams.Where(x => x != HomeTeam).ToList();
                         Team GuestTeam = possibleGuests[Terminal.Menu(possibleGuests.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
+
 
                         Match match = new Match(
                             null,
@@ -168,7 +184,7 @@ namespace BundesligaVerwaltung.Controller
                             Terminal.AskForInteger("Gegentore Tore eingeben")
                         );
                         Repository.Save(match);
-                        
+
 
                     }
                     else if (choice == 2)
@@ -177,12 +193,10 @@ namespace BundesligaVerwaltung.Controller
                         if (Teams.Count() < League.MaximumTeams)
                         {
                             Repository.Save(new Team(null, Terminal.AskForString("Team Name"), League));
-                            
-
                         }
                         else
                         {
-                            Terminal.Message("Maximal "+League.MaximumTeams+" Teams");
+                            Terminal.Message("Maximal " + League.MaximumTeams + " Teams");
                         }
                     }
                     else if (choice == 3)
@@ -191,7 +205,6 @@ namespace BundesligaVerwaltung.Controller
                         Team team = Teams[Terminal.Menu(Teams.Select(i => i.Name).ToArray(), "Team löschen")];
                         team.League = null;
                         Repository.Save(team);
-                        
                     }
                     else if (choice == 4)
                     {
@@ -203,7 +216,6 @@ namespace BundesligaVerwaltung.Controller
                                 Teams[Terminal.Menu(Teams.Select(x => x.Name).ToArray(), "Bitte Team wählen")],
                                 Roles[Terminal.Menu(Roles.Select(x => x.Name).ToArray(), "Bitte Rolle wählen")])
                             );
-                        
                     }
                     else if (choice == 5)
                     {
@@ -213,7 +225,7 @@ namespace BundesligaVerwaltung.Controller
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = Teams.Where(x => x != member.Team).ToArray()[Terminal.Menu(Teams.Where(x => x != member.Team).Select(x => x.Name).ToArray(), "Bitte wählen")];
                         Repository.Save(member);
-                        
+
                     }
                     else if (choice == 6)
                     {
@@ -223,16 +235,16 @@ namespace BundesligaVerwaltung.Controller
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = null;
                         Repository.Save(member);
-                        
+
                     }
                     else
                     { }
                     MainMenu();
                 }
-                else {
+                else
+                {
                     Repository.Flush();
                 }
-
             }
             catch (SelectMenu.NoElementsException)
             {

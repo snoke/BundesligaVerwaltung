@@ -17,9 +17,22 @@ namespace BundesligaVerwaltung.Model.Entities
         #endregion
 
         #region accessors
-        public string Name { get => name; set => name = value; }
-        public Team Team { get => team; set => team = value; }
-        public Role Role { get => role; set => role = value; }
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public Team Team
+        {
+            get { return team; }
+            set { team = value; }
+        }
+        public Role Role
+        {
+            get { return role; }
+            set { role = value; }
+        }
         #endregion
 
         #region constructors

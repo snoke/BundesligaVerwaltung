@@ -8,13 +8,25 @@ namespace BundesligaVerwaltung.Migration
     internal class PlayersMigration
     {
         private EntityRepository _repository;
-        public EntityRepository Repository { get => _repository; set => _repository = value; }
-
+        private EntityRepository Repository
+        {
+            get { return _repository; }
+            set { _repository = value; }
+        }
         private List<Team> _teams;
-        public List<Team> Teams { get => _teams; set => _teams = value; }
+        private List<Team> Teams
+        {
+            get { return _teams; }
+            set { _teams = value; }
+        }
+
 
         private List<Role> _roles;
-        public List<Role> Roles { get => _roles; set => _roles = value; }
+        public List<Role> Roles
+        {
+            get { return _roles; }
+            set { _roles = value; }
+        }
 
         public PlayersMigration(EntityRepository repository, List<Team> teams, List<Role> roles)
         {
@@ -79,12 +91,12 @@ namespace BundesligaVerwaltung.Migration
 
 
             //RB Leipzig
-            membersUp(teams.Single(x => x.Name== "RB Leipzig"), new string[] {
+            membersUp(teams.Single(x => x.Name == "RB Leipzig"), new string[] {
            "Péter Gulácsi","Yvon Mvogo","Tim Schreiber","Philipp Tschauner","Lukas Klostermann","Ibrahima Konaté","Nordi Mukiele","Willi Orban","Marcel Halstenberg","Marcelo Saracchi","Ethan Ampadu","Luan Cândido","Frederik Jäkel","Anton Rücker","Malik Talabidi","Dayot Upamecano","Marcel Sabitzer","Diego Demme","Konrad Laimer","Christopher Nkunku","Amadou Haidara","Kevin Kampl","Tyler Adams","Oliver Bias","Mads Bidstrup","Stefan Ilsanker","Tom Krauß","Max Winter","Hannes Wolf","Timo Werner","Yussuf Poulsen","Emil Forsberg","Matheus Cunha","Ademola Lookman","Jean - Kévin Augustin","Jacob Ruhner","Patrik Schick",
             }, roles.Single(x => x.Name == "Spieler"));
 
             //Bayer Leverkusen
-            membersUp(teams.Single(x => x.Name== "Bayer 04 Leverkusen"), new string[] {
+            membersUp(teams.Single(x => x.Name == "Bayer 04 Leverkusen"), new string[] {
      "Lukáš Hrádecký","Ramazan Özcan","Niklas Lomb","Sven Bender","Wendell","Jonathan Tah","Aleksandar Dragovic","Panagiotis Retsos","Mitchell Weiser","Kai Havertz","Charles Aránguiz","Karim Bellarabi","Kerem Demirbay","Nadiem Amiri","Julian Baumgartlinger","Lars Bender","Moussa Diaby","Daley Sinkgraven","Adrian Stanilewicz","Kevin Volland","Leon Bailey","Lucas Alario","Paulinho","Joel Pohjanpalo",
         }, roles.Single(x => x.Name == "Spieler"));
 
@@ -200,7 +212,7 @@ namespace BundesligaVerwaltung.Migration
                "Alexander Schwolow","Mark Flekken","Niclas Thiede","Philipp Lienhart","Christian Günter","Robin Koch","Nico Schlotterbeck","Dominique Heintz","Manuel Gulde","Gian-Luca Itter","Lukas Kübler","Jonathan Schmid","Brandon Borrello","Nicolas Höfler","Mike Frantz","Jerôme Gondorf","Chang-Hoon Kwon","Roland Sallai","Amir Abrashi","Janik Haberer","Woo-yeong Jeong","Patrick Kammerbauer","Florian Kath","Yoric Ravet","Fabian Rüdlin","Marco Terrazzino","Luca Waldschmidt","Lucas Höler","Nils Petersen","Tim Kleindienst",
             }, roles.Single(x => x.Name == "Spieler"));
             //Köln
-            membersUp(teams.Single(x => x.Name== "1.FC Köln"), new string[] {
+            membersUp(teams.Single(x => x.Name == "1.FC Köln"), new string[] {
                "Timo Horn","Thomas Kessler","Julian Krahl","Brady Scott","Rafael Czichos","Kingsley Ehizibue","Jorge Meré","Sebastiaan Bornauw","Matthias Bader","Ismail Jakobs","Noah Katterbach","Benno Erik Schmitz","Lasse Sobiech","Florian Kainz","Dominick Drexler","Kingsley Schindler","Jonas Hector","Birger Verstraete","Ellyes Skhiri","Marco Höger","Louis Schaub","Darko Churlinov","Christian Clemens","Niklas Hauptmann","Vincent Koziello","Nikolas Nartey","Marcel Risse","Anthony Modeste","Simon Terodde","Jhon Córdoba","Noah Joel Sarenren Bazee","Felix Schwarzholz","Florian Niederlechner","Alfred Finnbogason","Julian Schieber","Seong-Hoon Cheon","Sergio Córdova",
             }, roles.Single(x => x.Name == "Spieler"));
             //Fortuna Düsseldorf

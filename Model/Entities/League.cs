@@ -5,11 +5,21 @@
         #region properties
         private string name;
         private int maximumTeams;
+
         #endregion
 
         #region accessors
-        public string Name { get => name; set => name = value; }
-        public int MaximumTeams { get => maximumTeams; set => maximumTeams = value; }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public int MaximumTeams
+        {
+            get { return maximumTeams; }
+            set { maximumTeams = value; }
+        }
         #endregion
 
         #region constructors

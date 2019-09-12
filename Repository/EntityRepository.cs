@@ -26,12 +26,12 @@ namespace BundesligaVerwaltung.Repository
         private Dictionary<Type, List<Entity>> _entities;
 
         //Der Value eines jeden Mementos enthält den "alive"-Zustand und bestimmt ob diese objekt gespeichert oder gelöscht wird
-        private List<Dictionary<Entity,bool>> _mementos; 
+        private List<Dictionary<Entity, bool>> _mementos;
 
         #endregion
 
         #region accessors
-        private List<Dictionary<Entity,bool>> Mementos //Logs von Entityzuständen
+        private List<Dictionary<Entity, bool>> Mementos //Logs von Entityzuständen
         {
             get { return _mementos; }
             set { _mementos = value; }
@@ -41,7 +41,7 @@ namespace BundesligaVerwaltung.Repository
             get { return _types; }
             set { _types = value; }
         }
-        private Dictionary<Type,int> NextId
+        private Dictionary<Type, int> NextId
         {
             get { return _nextId; }
             set { _nextId = value; }
@@ -69,8 +69,8 @@ namespace BundesligaVerwaltung.Repository
             dataStorage = new SQLiteStrategy("db.sqlite", types, debug);
             Types = types;
             Entities = new Dictionary<Type, List<Entity>>();
-            NextId = new Dictionary<Type,int>();
-            Mementos = new List<Dictionary<Entity,bool>>();
+            NextId = new Dictionary<Type, int>();
+            Mementos = new List<Dictionary<Entity, bool>>();
             foreach (KeyValuePair<string, Type> entry in Types)
             {
                 NextId[entry.Value] = dataStorage.GetNextId(entry.Value);
@@ -83,7 +83,6 @@ namespace BundesligaVerwaltung.Repository
         #region workers
         private int GetNextId(Type eType)
         {
-
             int id = NextId[eType];
             NextId[eType]++;
             return id;
@@ -95,29 +94,54 @@ namespace BundesligaVerwaltung.Repository
                 Entities[entry.Value] = new List<Entity>();
                 Load(entry.Value);
             }
+            /*
+            string listname = nameof(ICollection);
+            foreach (KeyValuePair<Type, List<Entity>> entry in Entities)
+            {
+                foreach (Entity entity in entry.Value)
+                {
+                    BindingFlags universalBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+                    foreach (FieldInfo fieldinfo in entry.Key.GetFields(universalBindingFlags))
+                    {
+                        Type  fieldType= fieldinfo.FieldType;
+                        if (fieldType.GetInterface(listname) != null)
+                        {
+                            List<Entity> list = new List<Entity>();
+                            foreach(int children in (List<int>)fieldinfo.GetValue(entity))
+                            {
+                                Console.WriteLine();
+                                //  list.Add();
+                                Console.ReadLine();
+                            }
+                        }
+                    }
+                }
+            }
+            */
         }
         public void Flush() //Speichert den letzten Zustand aller geänderten Objekte in die Datenbank und leert die Mementos
         {
-            foreach (Dictionary<Entity,bool> dictionary in Mementos)
+            foreach (Dictionary<Entity, bool> dictionary in Mementos)
             {
                 List<int> idHandled = new List<int>();
-                foreach (KeyValuePair<Entity,bool> entry in dictionary.Reverse())
+                foreach (KeyValuePair<Entity, bool> entry in dictionary.Reverse())
                 {
 
                     Entity entity = entry.Key;
                     bool alive = entry.Value;
-                    if (entity.id!=null && idHandled.Contains((int)entity.id))
+                    if (entity.id != null && idHandled.Contains((int)entity.id))
                     {
                         continue;
-                    } else if (alive == false)
+                    }
+                    else if (alive == false)
                     {
-                        this.dataStorage.RemoveEntity(entity);
+                        dataStorage.RemoveEntity(entity);
                         idHandled.Add((int)entity.id);
                         Entities[entry.Value.GetType()].Remove(entity);
                     }
                     else
                     {
-                        entity.id = this.dataStorage.SaveEntity(entity);
+                        entity.id = dataStorage.SaveEntity(entity);
                         idHandled.Add((int)entity.id);
                     }
                 }
@@ -128,7 +152,7 @@ namespace BundesligaVerwaltung.Repository
         private Entity CreateInstance(Type entityType, List<object> parameters)
         {
             Entity entity = (Entity)Activator.CreateInstance(entityType, parameters.ToArray());
-            return SetEntity(entity); 
+            return SetEntity(entity);
         }
         private void Load(Type entityType)
         {
@@ -194,7 +218,7 @@ namespace BundesligaVerwaltung.Repository
         private Entity SetEntity(Entity entity)
         {
 
-            if (entity.id!=null && Entities[entity.GetType()].Any(x => x.id == entity.id))
+            if (entity.id != null && Entities[entity.GetType()].Any(x => x.id == entity.id))
             {
                 int index = Entities[entity.GetType()].FindIndex(x => x.id == entity.id);
                 Entities[entity.GetType()][index] = entity;
@@ -205,7 +229,8 @@ namespace BundesligaVerwaltung.Repository
                 if (entity.id == null)
                 {
                     entity.id = GetNextId(entity.GetType());
-                } else
+                }
+                else
                 {
 
                 }
@@ -216,7 +241,7 @@ namespace BundesligaVerwaltung.Repository
         public Entity Save(Entity entity)
         {
             entity = SetEntity(entity);
-            Mementos.Add(new Dictionary< Entity, bool>()
+            Mementos.Add(new Dictionary<Entity, bool>()
                 {
                     { entity.Clone(),true },
                 }
@@ -243,21 +268,29 @@ namespace BundesligaVerwaltung.Repository
         }
         public void DefaultMigration()
         {
+            //TODO: reset IDs!
 
+            foreach (KeyValuePair<string, Type> entry in Types)
+            {
+                //NextId[entry.Value] = dataStorage.GetNextId(entry.Value);
+                NextId[entry.Value] = 1;
+                Entities[entry.Value] = new List<Entity>();
+            }
             new SchemaMigration(dataStorage, Types).up();
-            Save(new Role((int?)null, "Spieler"));
-            Save(new Role((int?)null, "Trainer"));
-            Save(new Role((int?)null, "Physio"));
-            Save(new League((int?)null, "Bundesliga", 18));
+            Save(new Role(null, "Spieler"));
+            Save(new Role(null, "Trainer"));
+            Save(new Role(null, "Physio"));
+            Save(new League(null, "Bundesliga", 18));
             List<Team> teams = Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Team")].Cast<Team>().ToList();
             List<League> leagues = Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.League")].Cast<League>().ToList();
             List<Role> roles = Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Role")].Cast<Role>().ToList();
             new TeamsMigration(this, teams, leagues).up();
             new PlayersMigration(this, Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Team")].Cast<Team>().ToList(), Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Role")].Cast<Role>().ToList()).up();
-           
+            
+           // Flush();
             new SpieltagEinsMigration(this, Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Team")].Cast<Team>().ToList()).up();
 
-            Flush();
+           Flush();
         }
         #endregion
     }

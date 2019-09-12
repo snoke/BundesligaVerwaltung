@@ -149,12 +149,9 @@ namespace BundesligaVerwaltung.Repository.DataStorage
 
             sql = sql.Substring(0, sql.Length - 1) + ");";
             query(sql);
-            if (e.id==null)
-            {
+            if (e.id == null) {
                 return Int32.Parse(query("SELECT id FROM " + eType.Name + " WHERE id = (SELECT MAX(id) FROM " + eType.Name + ");").Single().First());
-
-            } else
-            {
+            } else {
                 return (int)e.id;
             }
         }
@@ -174,7 +171,8 @@ namespace BundesligaVerwaltung.Repository.DataStorage
             {
                 return Int32.Parse(Result.Single().First()) + 1;
 
-            } else
+            }
+            else
             {
                 return 1;
             }
