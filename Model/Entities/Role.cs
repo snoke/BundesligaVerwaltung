@@ -1,6 +1,6 @@
 ﻿namespace BundesligaVerwaltung.Model.Entities
 {
-    public class Role : Entity
+    public class Role : myEntityRepository.Model.Entity
     {
         #region properties
         private string name;

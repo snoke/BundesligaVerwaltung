@@ -8,7 +8,7 @@
  */
 namespace BundesligaVerwaltung.Model.Entities
 {
-    public class Match : Entity
+    public class Match : myEntityRepository.Model.Entity
     {
         #region properties
         private Team team;

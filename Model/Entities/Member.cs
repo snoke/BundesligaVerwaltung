@@ -8,7 +8,7 @@
  */
 namespace BundesligaVerwaltung.Model.Entities
 {
-    public class Member : Entity
+    public class Member : myEntityRepository.Model.Entity
     {
         #region properties
         private string name;

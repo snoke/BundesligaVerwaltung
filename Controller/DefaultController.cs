@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using BundesligaVerwaltung.Model.Entities;
-using BundesligaVerwaltung.Repository;
 using BundesligaVerwaltung.View;
-using BundesligaVerwaltung;
+using myEntityRepository;
 namespace BundesligaVerwaltung.Controller
 {
     public class DefaultController
@@ -13,7 +12,7 @@ namespace BundesligaVerwaltung.Controller
         private bool _debug;
 
         //beinhaltet die Typen, welche vom Repository kontrolliert werden
-        private Dictionary<string, Type> _entityTypes;
+        private List<Type> _entityTypes;
 
         private EntityRepository repository;
         private Terminal terminal;
@@ -25,7 +24,7 @@ namespace BundesligaVerwaltung.Controller
             get { return _debug; }
             set { _debug = value; }
         }
-        private Dictionary<string, Type> EntityTypes
+        private List<Type> EntityTypes
         {
             get { return _entityTypes; }
             set { _entityTypes = value; }
@@ -46,35 +45,35 @@ namespace BundesligaVerwaltung.Controller
         {
             get
             {
-                return Repository.Entities[EntityTypes["League"]].Cast<League>().ToList();
+                return Repository.Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.League")].Cast<League>().ToList();
             }
         }
         private List<Team> Teams
         {
             get
             {
-                return Repository.Entities[EntityTypes["Team"]].Cast<Team>().Where(x => x.League == League).ToList();
-            }
+                return Repository.Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Team")].Cast<Team>().Where(x => x.League == League).ToList();
+             }
         }
         private List<Match> Matches
         {
             get
             {
-                return Repository.Entities[EntityTypes["Match"]].Cast<Match>().ToList();
+                return Repository.Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Match")].Cast<Match>().ToList();
             }
         }
         private List<Member> Members
         {
             get
             {
-                return Repository.Entities[EntityTypes["Member"]].Cast<Member>().ToList();
+                return Repository.Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Member")].Cast<Member>().ToList();
             }
         }
         private List<Role> Roles
         {
             get
             {
-                return Repository.Entities[EntityTypes["Role"]].Cast<Role>().ToList();
+                return Repository.Entities[Type.GetType("BundesligaVerwaltung.Model.Entities.Role")].Cast<Role>().ToList();
             }
         }
         //die aktive Liga
@@ -96,13 +95,13 @@ namespace BundesligaVerwaltung.Controller
             Terminal = new Terminal();
 
             //Definiere die Typen , welche vom Repository gesteuert werden sollen.
-            EntityTypes = new Dictionary<string, Type>
+            EntityTypes = new List<Type>()
             {
-                { "League", Type.GetType("BundesligaVerwaltung.Model.Entities.League") },
-                { "Role", Type.GetType("BundesligaVerwaltung.Model.Entities.Role") },
-                { "Team", Type.GetType("BundesligaVerwaltung.Model.Entities.Team") },
-                { "Match", Type.GetType("BundesligaVerwaltung.Model.Entities.Match") },
-                { "Member", Type.GetType("BundesligaVerwaltung.Model.Entities.Member") }
+                 Type.GetType("BundesligaVerwaltung.Model.Entities.League") ,
+                  Type.GetType("BundesligaVerwaltung.Model.Entities.Role") ,
+                  Type.GetType("BundesligaVerwaltung.Model.Entities.Team"),
+                 Type.GetType("BundesligaVerwaltung.Model.Entities.Match") ,
+                 Type.GetType("BundesligaVerwaltung.Model.Entities.Member") 
             };
             Repository = new EntityRepository(EntityTypes, debug);
             //Repository.DefaultMigration();
@@ -117,7 +116,21 @@ namespace BundesligaVerwaltung.Controller
                 new string[] { "Tabelle aktualisieren", "zurück zum Hauptmenü" },
                 Terminal.Scoreboard(Matches, Teams) + "\nBitte wählen"))
             {
-                Repository.Flush();
+                if (Repository.IsDirty())
+                {
+                    switch (Terminal.Menu(new string[] { "Speichern", "Verwerfen" }, "Sie haben ungespeicherte Änderungen\nMöchten Sie diese Speichern oder Verwerfen?"))
+                    {
+                        case 0:
+                            Repository.Flush();
+                            Console.ReadLine();
+                            break;
+                        default:
+                            break;
+                    }
+                } else
+                {
+
+                }
                 Repository.Pull();
                 Scoreboard();
             }
@@ -139,7 +152,6 @@ namespace BundesligaVerwaltung.Controller
                 int choice = Terminal.Menu(new string[] { "Tabelle anzeigen", "Spielergebnis hinzufügen", "Team hinzufügen", "Team entfernen", "Mitglied hinzufügen", "Mitglied Teamwechsel", "Mitglied entfernen", "Programm beenden" }, "Bitte wählen");
                 if (choice != 7)
                 {
-
                     if (choice == 0)
                     {
                         //Tabelle anzeigen
@@ -175,7 +187,6 @@ namespace BundesligaVerwaltung.Controller
                         List<Team> possibleGuests = possibleTeams.Where(x => x != HomeTeam).ToList();
                         Team GuestTeam = possibleGuests[Terminal.Menu(possibleGuests.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
 
-
                         Match match = new Match(
                             null,
                             HomeTeam,
@@ -184,8 +195,6 @@ namespace BundesligaVerwaltung.Controller
                             Terminal.AskForInteger("Gegentore Tore eingeben")
                         );
                         Repository.Save(match);
-
-
                     }
                     else if (choice == 2)
                     {
@@ -225,7 +234,6 @@ namespace BundesligaVerwaltung.Controller
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = Teams.Where(x => x != member.Team).ToArray()[Terminal.Menu(Teams.Where(x => x != member.Team).Select(x => x.Name).ToArray(), "Bitte wählen")];
                         Repository.Save(member);
-
                     }
                     else if (choice == 6)
                     {
