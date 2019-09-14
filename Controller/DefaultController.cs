@@ -15,8 +15,6 @@ namespace BundesligaVerwaltung.Controller
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        const int SW_HIDE = 0;
-        const int SW_SHOW = 5;
 
         #region properties
         private bool _debug;
@@ -103,8 +101,7 @@ namespace BundesligaVerwaltung.Controller
           debug = false;
             if (false==debug)
             {
-                var handle = GetConsoleWindow();
-                ShowWindow(handle, SW_HIDE);
+                ShowWindow(GetConsoleWindow(), 0);
             }
             Terminal = new WindowsFormsUI();
 
