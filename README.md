@@ -3,6 +3,7 @@
 
 ## Dependencies:
 
+* System.Data.SQLite
 
 * https://github.com/snoke/myEntityRepository
 
