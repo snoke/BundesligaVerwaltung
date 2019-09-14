@@ -273,7 +273,7 @@ namespace BundesligaVerwaltung.Controller
                     System.Threading.Thread.Sleep(1000);
                 }
             }
-            catch (SelectMenu.NoElementsException)
+            catch (Exception.NoElementsException)
             {
                 Terminal.Message("Fehler\n Die Liste ist leer!");
                 MainMenu();

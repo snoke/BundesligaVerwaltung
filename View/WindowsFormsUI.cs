@@ -32,6 +32,10 @@ namespace BundesligaVerwaltung.View
         #region workers
         public override  int Scoreboard(List<Match> matches, List<Team> teams)
         {
+            if (teams.Count<1)
+            {
+                throw new Exception.NoElementsException();
+            } else{ }
             List<string[]> rows = new List<string[]>();
             foreach (Team team in teams)
             {
@@ -69,6 +73,11 @@ namespace BundesligaVerwaltung.View
         }
         public override int Menu(string[] options, string header)
         {
+            if (options.Length < 1)
+            {
+                throw new SelectMenu.NoElementsException();
+            }
+            else { }
             MenuForm f1 = new MenuForm(options);
             f1.ShowDialog();
             return options.ToList<string>().IndexOf(((System.Windows.Forms.ToolStripMenuItem)f1.SelectedElement).Name);

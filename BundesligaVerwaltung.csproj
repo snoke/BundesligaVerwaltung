@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\DefaultController.cs" />
+    <Compile Include="Exception\NoElementsException.cs" />
     <Compile Include="Migration\PlayersMigration.cs" />
     <Compile Include="Migration\SpieltagEinsMigration.cs" />
     <Compile Include="Migration\TeamsMigration.cs" />

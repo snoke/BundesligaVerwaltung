@@ -93,7 +93,14 @@ namespace BundesligaVerwaltung.View
         }
         public override int Menu(string[] options, string header)
         {
-            return new SelectMenu.SelectMenu(options).setTitle(header).select();
+            try
+            {
+                return new SelectMenu.SelectMenu(options).setTitle(header).select();
+
+            } catch(SelectMenu.NoElementsException)
+            {
+                throw new Exception.NoElementsException();
+            }
         }
         public override int AskForInteger(string question)
         {
@@ -134,7 +141,17 @@ namespace BundesligaVerwaltung.View
 
         public override void Message(string message)
         {
-            new SelectMenu.SelectMenu("OK").setTitle(message).select();
+
+            try
+            {
+                new SelectMenu.SelectMenu("OK").setTitle(message).select();
+
+            }
+            catch (SelectMenu.NoElementsException)
+            {
+                throw new Exception.NoElementsException();
+            }
+
         }
         public override string AskForString(string question)
         {
