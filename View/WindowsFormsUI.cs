@@ -75,7 +75,7 @@ namespace BundesligaVerwaltung.View
         {
             if (options.Length < 1)
             {
-                throw new SelectMenu.NoElementsException();
+                throw new Exception.NoElementsException();
             }
             else { }
             MenuForm f1 = new MenuForm(options);
