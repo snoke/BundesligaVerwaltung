@@ -106,7 +106,7 @@ namespace BundesligaVerwaltung.View
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "TableForm";
-            this.Text = "Form1";
+            this.Text = "BundesligaVerwalter";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

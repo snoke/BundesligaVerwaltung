@@ -242,22 +242,21 @@ namespace BundesligaVerwaltung.Controller
                         {
                             throw new Exception.NoElementsException();
                         } else
-                        {
-                            Team HomeTeam = possibleTeams[Terminal.Menu(possibleTeams.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
+                        {}
 
-                            List<Team> possibleGuests = possibleTeams.Where(x => x != HomeTeam).ToList();
-                            Team GuestTeam = possibleGuests[Terminal.Menu(possibleGuests.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
+                        Team HomeTeam = possibleTeams[Terminal.Menu(possibleTeams.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
 
-                            Match match = new Match(
-                                null,
-                                HomeTeam,
-                                GuestTeam,
-                                Terminal.AskForInteger("Tore eingeben"),
-                                Terminal.AskForInteger("Gegentore Tore eingeben")
-                            );
-                            Repository.Save(match);
+                        List<Team> possibleGuests = possibleTeams.Where(x => x != HomeTeam).ToList();
+                        Team GuestTeam = possibleGuests[Terminal.Menu(possibleGuests.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
 
-                        }
+                        Match match = new Match(
+                            null,
+                            HomeTeam,
+                            GuestTeam,
+                            Terminal.AskForInteger("Tore eingeben"),
+                            Terminal.AskForInteger("Gegentore Tore eingeben")
+                        );
+                        Repository.Save(match);
                     }
                     else if (choice == 2)
                     {
@@ -277,16 +276,18 @@ namespace BundesligaVerwaltung.Controller
                         if (Teams.Count() < 1)
                         {
                             throw new Exception.NoElementsException();
-                        }
-                        else
-                        {
-                            Team team = Teams[Terminal.Menu(Teams.Select(i => i.Name).ToArray(), "Team löschen")];
-                            team.League = null;
-                            Repository.Save(team);
-                        }
+                        } else { }
+                        Team team = Teams[Terminal.Menu(Teams.Select(i => i.Name).ToArray(), "Team löschen")];
+                        team.League = null;
+                        Repository.Save(team);
                     }
                     else if (choice == 4)
                     {
+                        //Spieler entfernen
+                        if (Teams.Count() < 1 )
+                        {
+                            throw new Exception.NoElementsException();
+                        } else { }
                         //Spieler hinzufügen
                         Repository.Save(
                             new Member(
@@ -298,6 +299,11 @@ namespace BundesligaVerwaltung.Controller
                     }
                     else if (choice == 5)
                     {
+                        //Spieler entfernen
+                        if (Teams.Count() < 2 || Members.Count() < 1)
+                        {
+                            throw new Exception.NoElementsException();
+                        } else { }
                         //Spieler Teamwechsel
                         Team team = Teams[Terminal.Menu(Teams.Select(x => x.Name).ToArray(), "Bitte wählen")];
                         List<Member> teamMembers = Members.Where(x => x.Team == team).ToList();
@@ -308,6 +314,11 @@ namespace BundesligaVerwaltung.Controller
                     else if (choice == 6)
                     {
                         //Spieler entfernen
+                        if (Teams.Count()<1 || Members.Count()<1)
+                        {
+                            throw new Exception.NoElementsException();
+                        }
+                        else { }
                         Team team = Teams[Terminal.Menu(Teams.Select(x => x.Name).ToArray(), "Bitte wählen")];
                         List<Member> teamMembers = Members.Where(x => x.Team == team).ToList();
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];

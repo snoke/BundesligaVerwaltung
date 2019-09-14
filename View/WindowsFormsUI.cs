@@ -85,7 +85,7 @@ namespace BundesligaVerwaltung.View
         }
         public override int AskForInteger(string question)
         {
-            string input = Microsoft.VisualBasic.Interaction.InputBox(question, question, "Default", 0, 0);
+            string input = Microsoft.VisualBasic.Interaction.InputBox(question, question, "0", 0, 0);
             int result = 0;
             bool success = Int32.TryParse(input, out result);
             if (success)
@@ -105,7 +105,7 @@ namespace BundesligaVerwaltung.View
         }
         public override string AskForString(string question)
         {//
-            return Microsoft.VisualBasic.Interaction.InputBox(question, question, "Default", 0, 0);
+            return Microsoft.VisualBasic.Interaction.InputBox(question, question, "", 0, 0);
         }
         public override void SplashScreen()
         {
