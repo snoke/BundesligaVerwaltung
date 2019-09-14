@@ -8,9 +8,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BundesligaVerwaltung", "Bun
 		{DB175AC0-BEA3-41E0-9101-FA33F70482DC} = {DB175AC0-BEA3-41E0-9101-FA33F70482DC}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myEntityRepository", "..\..\..\source\repos\myEntityRepository\myEntityRepository\myEntityRepository.csproj", "{11BE1CAA-BD88-4E30-BCD4-1C36D7CC2E34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myEntityRepository", "..\myEntityRepository\myEntityRepository\myEntityRepository.csproj", "{11BE1CAA-BD88-4E30-BCD4-1C36D7CC2E34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mySelectMenu", "..\..\..\source\repos\mySelectMenu\mySelectMenu\mySelectMenu.csproj", "{DB175AC0-BEA3-41E0-9101-FA33F70482DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mySelectMenu", "..\mySelectMenu\mySelectMenu\mySelectMenu.csproj", "{DB175AC0-BEA3-41E0-9101-FA33F70482DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

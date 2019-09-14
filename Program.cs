@@ -13,6 +13,7 @@ namespace BundesligaVerwaltung
     {
         public static void Main(string[] args)
         {
+            //   myEntityRepositoryExample.Example.Main();
             new DefaultController().Run();
         }
     }

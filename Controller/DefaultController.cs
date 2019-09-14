@@ -92,7 +92,7 @@ namespace BundesligaVerwaltung.Controller
           //  debug = false;
           debug = true;
 
-            Terminal = new Terminal();
+            Terminal = new WindowsFormsTerminal();
 
             //Definiere die Typen , welche vom Repository gesteuert werden sollen.
             EntityTypes = new List<Type>()
@@ -112,6 +112,24 @@ namespace BundesligaVerwaltung.Controller
         #region workers
         private void Scoreboard()
         {
+           int choice = Terminal.Scoreboard(Matches, Teams);
+            if (choice==1)
+            {
+                if (Repository.IsDirty())
+                {
+                    switch (Terminal.Menu(new string[] { "Speichern", "Verwerfen" }, "Sie haben ungespeicherte Änderungen\nMöchten Sie diese Speichern oder Verwerfen?"))
+                    {
+                        case 0:
+                            Repository.Flush();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                Repository.Pull();
+                Scoreboard();
+            } else {}
+            /*
             if (0 == Terminal.Menu(
                 new string[] { "Tabelle aktualisieren", "zurück zum Hauptmenü" },
                 Terminal.Scoreboard(Matches, Teams) + "\nBitte wählen"))
@@ -122,7 +140,6 @@ namespace BundesligaVerwaltung.Controller
                     {
                         case 0:
                             Repository.Flush();
-                            Console.ReadLine();
                             break;
                         default:
                             break;
@@ -135,6 +152,7 @@ namespace BundesligaVerwaltung.Controller
                 Scoreboard();
             }
             else { }
+            */
         }
         public void Run()
         {
@@ -252,6 +270,7 @@ namespace BundesligaVerwaltung.Controller
                 else
                 {
                     Repository.Flush();
+                    System.Threading.Thread.Sleep(1000);
                 }
             }
             catch (SelectMenu.NoElementsException)
