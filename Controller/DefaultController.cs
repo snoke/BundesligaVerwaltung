@@ -98,7 +98,7 @@ namespace BundesligaVerwaltung.Controller
         public DefaultController()
         {
           //  debug = false;
-          debug = false;
+          debug = true;
             if (false==debug)
             {
                 ShowWindow(GetConsoleWindow(), 0);
@@ -116,7 +116,6 @@ namespace BundesligaVerwaltung.Controller
             };
             Repository = new EntityRepository(EntityTypes, debug);
             this.DefaultMigration();
-            Repository.Pull();
         }
         #endregion
 
@@ -323,7 +322,10 @@ namespace BundesligaVerwaltung.Controller
                 else
                 {
                     Repository.Flush();
-                    System.Threading.Thread.Sleep(1000);
+                    if (debug)
+                    {
+                        System.Threading.Thread.Sleep(1000);
+                    } else { }
                 }
             }
             catch (Exception.NoElementsException)
