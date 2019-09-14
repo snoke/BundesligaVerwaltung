@@ -115,7 +115,7 @@ namespace BundesligaVerwaltung.Controller
            int choice = Terminal.Scoreboard(Matches, Teams);
             if (choice==1)
             {
-                if (Repository.IsDirty())
+                if (Repository.IsDirty()) //TODO: insert dirty joke here!
                 {
                     switch (Terminal.Menu(new string[] { "Speichern", "Verwerfen" }, "Sie haben ungespeicherte Änderungen\nMöchten Sie diese Speichern oder Verwerfen?"))
                     {
