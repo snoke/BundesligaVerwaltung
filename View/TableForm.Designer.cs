@@ -35,6 +35,7 @@ namespace BundesligaVerwaltung.View
 
             // no larger than screen size
             e.MaximumSize = new System.Drawing.Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            e.Size = new System.Drawing.Size();
 
             e.AutoSize = true;
             e.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -90,7 +91,7 @@ namespace BundesligaVerwaltung.View
             // 
             this.button1.Location = new System.Drawing.Point(12, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(175, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "Tabelle Aktualisieren";
             this.button1.UseVisualStyleBackColor = true;
