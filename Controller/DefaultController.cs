@@ -4,10 +4,20 @@ using System.Linq;
 using BundesligaVerwaltung.Model.Entities;
 using BundesligaVerwaltung.View;
 using myEntityRepository;
+using System.Runtime.InteropServices;
 namespace BundesligaVerwaltung.Controller
 {
     public class DefaultController
     {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         #region properties
         private bool _debug;
 
@@ -90,8 +100,12 @@ namespace BundesligaVerwaltung.Controller
         public DefaultController()
         {
           //  debug = false;
-          debug = true;
-
+          debug = false;
+            if (false==debug)
+            {
+                var handle = GetConsoleWindow();
+                ShowWindow(handle, SW_HIDE);
+            }
             Terminal = new WindowsFormsUI();
 
             //Definiere die Typen , welche vom Repository gesteuert werden sollen.
@@ -110,7 +124,8 @@ namespace BundesligaVerwaltung.Controller
         #endregion
 
         #region workers
-        private void DefaultMigration()
+
+    private void DefaultMigration()
         {
             if (false==Leagues.Any(x => x.Name == "Bundesliga"))
             {
@@ -227,19 +242,26 @@ namespace BundesligaVerwaltung.Controller
                             gameday = (int)day;
                         }
                         List<Team> possibleTeams = Teams.Where(x => (Matches.Where(y => y.Team == x || y.Opponent == x).Count() <= gameday)).ToList();
-                        Team HomeTeam = possibleTeams[Terminal.Menu(possibleTeams.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
+                        if (possibleTeams.Count()<2)
+                        {
+                            throw new Exception.NoElementsException();
+                        } else
+                        {
+                            Team HomeTeam = possibleTeams[Terminal.Menu(possibleTeams.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
 
-                        List<Team> possibleGuests = possibleTeams.Where(x => x != HomeTeam).ToList();
-                        Team GuestTeam = possibleGuests[Terminal.Menu(possibleGuests.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
+                            List<Team> possibleGuests = possibleTeams.Where(x => x != HomeTeam).ToList();
+                            Team GuestTeam = possibleGuests[Terminal.Menu(possibleGuests.Select(x => x.Name).ToArray(), "Bitte Team wählen")];
 
-                        Match match = new Match(
-                            null,
-                            HomeTeam,
-                            GuestTeam,
-                            Terminal.AskForInteger("Tore eingeben"),
-                            Terminal.AskForInteger("Gegentore Tore eingeben")
-                        );
-                        Repository.Save(match);
+                            Match match = new Match(
+                                null,
+                                HomeTeam,
+                                GuestTeam,
+                                Terminal.AskForInteger("Tore eingeben"),
+                                Terminal.AskForInteger("Gegentore Tore eingeben")
+                            );
+                            Repository.Save(match);
+
+                        }
                     }
                     else if (choice == 2)
                     {
@@ -256,9 +278,16 @@ namespace BundesligaVerwaltung.Controller
                     else if (choice == 3)
                     {
                         //Team entfernen
-                        Team team = Teams[Terminal.Menu(Teams.Select(i => i.Name).ToArray(), "Team löschen")];
-                        team.League = null;
-                        Repository.Save(team);
+                        if (Teams.Count() < 1)
+                        {
+                            throw new Exception.NoElementsException();
+                        }
+                        else
+                        {
+                            Team team = Teams[Terminal.Menu(Teams.Select(i => i.Name).ToArray(), "Team löschen")];
+                            team.League = null;
+                            Repository.Save(team);
+                        }
                     }
                     else if (choice == 4)
                     {
