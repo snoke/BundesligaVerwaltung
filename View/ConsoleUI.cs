@@ -13,7 +13,7 @@ using BundesligaVerwaltung.Model.Entities;
 using BundesligaVerwaltung.View;
 namespace BundesligaVerwaltung.View
 {
-    public class ConsoleTerminal:Terminal
+    public class ConsoleUI:UserInterface
     {
         #region properties
         #endregion
@@ -22,7 +22,7 @@ namespace BundesligaVerwaltung.View
         #endregion
 
         #region constructors
-        public ConsoleTerminal()
+        public ConsoleUI()
         {
         }
         #endregion

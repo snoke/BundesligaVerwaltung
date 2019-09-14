@@ -6,7 +6,7 @@ using BundesligaVerwaltung.Model.Entities;
 
 namespace BundesligaVerwaltung.View
 {
-    public abstract class Terminal
+    public abstract class UserInterface
     {
         public abstract int Menu(string[] options, string header);
         public abstract void SplashScreen();

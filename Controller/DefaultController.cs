@@ -15,7 +15,7 @@ namespace BundesligaVerwaltung.Controller
         private List<Type> _entityTypes;
 
         private EntityRepository repository;
-        private Terminal terminal;
+        private UserInterface terminal;
         #endregion
         
         #region accessors
@@ -36,7 +36,7 @@ namespace BundesligaVerwaltung.Controller
             set { repository = value; }
         }
 
-        private Terminal Terminal
+        private UserInterface Terminal
         {
             get { return terminal; }
             set { terminal = value; }
@@ -92,7 +92,7 @@ namespace BundesligaVerwaltung.Controller
           //  debug = false;
           debug = true;
 
-            Terminal = new WindowsFormsTerminal();
+            Terminal = new WindowsFormsUI();
 
             //Definiere die Typen , welche vom Repository gesteuert werden sollen.
             EntityTypes = new List<Type>()

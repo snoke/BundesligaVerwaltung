@@ -15,7 +15,7 @@ using BundesligaVerwaltung.Model.Entities;
 using BundesligaVerwaltung.View;
 namespace BundesligaVerwaltung.View
 {
-    public class WindowsFormsTerminal:Terminal
+    public class WindowsFormsUI:UserInterface
     {
         #region properties
         #endregion
@@ -24,7 +24,7 @@ namespace BundesligaVerwaltung.View
         #endregion
 
         #region constructors
-        public WindowsFormsTerminal()
+        public WindowsFormsUI()
         {
         }
         #endregion
@@ -69,7 +69,7 @@ namespace BundesligaVerwaltung.View
         }
         public override int Menu(string[] options, string header)
         {
-            Form1 f1 = new Form1(options);
+            MenuForm f1 = new MenuForm(options);
             f1.ShowDialog();
             return options.ToList<string>().IndexOf(((System.Windows.Forms.ToolStripMenuItem)f1.SelectedElement).Name);
            // return new SelectMenu.SelectMenu(options).setTitle(header).select();

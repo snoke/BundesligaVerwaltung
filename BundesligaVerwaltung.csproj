@@ -77,27 +77,21 @@
     <Compile Include="Model\Entities\Team.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\ConsoleTerminal.cs" />
-    <Compile Include="View\Terminal.cs" />
-    <Compile Include="View\Form1.cs">
+    <Compile Include="View\ConsoleUI.cs" />
+    <Compile Include="View\UserInterface.cs" />
+    <Compile Include="View\WindowsFormsUI\MenuForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="View\WindowsFormsUI\MenuForm.Designer.cs">
+      <DependentUpon>MenuForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Form2.cs">
+    <Compile Include="View\WindowsFormsUI\TableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\TableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\TableForm.Designer.cs">
+    <Compile Include="View\WindowsFormsUI\TableForm.Designer.cs">
       <DependentUpon>TableForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\WindowsFormsTerminal.cs" />
+    <Compile Include="View\WindowsFormsUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -117,16 +111,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="View\WindowsFormsUI\MenuForm.resx">
+      <DependentUpon>MenuForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\TableForm.resx">
+    <EmbeddedResource Include="View\WindowsFormsUI\TableForm.resx">
       <DependentUpon>TableForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.111.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.111.0\build\net40\System.Data.SQLite.Core.targets')" />
 </Project>

@@ -9,11 +9,15 @@ using System.Windows.Forms;
 
 namespace BundesligaVerwaltung.View
 {
-    public partial class Form2 : Form
+    public partial class MenuForm : Form
     {
-        public Form2()
+        private string[] options;
+        public MenuForm(string[] options)
         {
+            this.Options = options;
             InitializeComponent();
         }
+
+        public string[] Options { get => options; set => options = value; }
     }
 }

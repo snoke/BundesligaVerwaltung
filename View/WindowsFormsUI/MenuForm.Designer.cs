@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BundesligaVerwaltung.View
 {
-    partial class Form1
+    partial class MenuForm
     {
         private object selectedElement;
 
