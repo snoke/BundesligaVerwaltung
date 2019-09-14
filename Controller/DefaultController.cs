@@ -104,12 +104,39 @@ namespace BundesligaVerwaltung.Controller
                  Type.GetType("BundesligaVerwaltung.Model.Entities.Member") 
             };
             Repository = new EntityRepository(EntityTypes, debug);
-            //Repository.DefaultMigration();
+            this.DefaultMigration();
             Repository.Pull();
         }
         #endregion
 
         #region workers
+        private void DefaultMigration()
+        {
+            if (false==Leagues.Any(x => x.Name == "Bundesliga"))
+            {
+                Repository.Save(new League((int?)null,"Bundesliga",18));
+            } else { }
+
+            if (false == Roles.Any(x => x.Name == "Physio"))
+            {
+                Repository.Save(new Role((int?)null, "Physio"));
+            }
+            else { }
+
+            if (false == Roles.Any(x => x.Name == "Trainer"))
+            {
+                Repository.Save(new Role((int?)null, "Trainer"));
+            }
+            else { }
+
+            if (false == Roles.Any(x => x.Name == "Spieler"))
+            {
+                Repository.Save(new Role((int?)null, "Spieler"));
+            }
+            else { }
+
+            Repository.Flush();
+        }
         private void Scoreboard()
         {
            int choice = Terminal.Scoreboard(Matches, Teams);
