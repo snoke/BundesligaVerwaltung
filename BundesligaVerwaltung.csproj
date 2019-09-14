@@ -72,7 +72,6 @@
     <Compile Include="Migration\SchemaMigration.cs" />
     <Compile Include="Model\Entities\League.cs" />
     <Compile Include="Model\Entities\Role.cs" />
-    <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\Entities\Match.cs" />
     <Compile Include="Model\Entities\Member.cs" />
     <Compile Include="Model\Entities\Team.cs" />
