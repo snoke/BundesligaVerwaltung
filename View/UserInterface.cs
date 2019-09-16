@@ -9,6 +9,7 @@ namespace BundesligaVerwaltung.View
     public abstract class UserInterface
     {
         public abstract int Menu(string[] options, string header);
+        public abstract int MainMenu(string[] options, string header);
         public abstract void SplashScreen();
         public abstract int AskForInteger(string question);
         public abstract string AskForString(string message);

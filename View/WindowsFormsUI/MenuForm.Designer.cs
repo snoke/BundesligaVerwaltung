@@ -7,11 +7,11 @@ namespace BundesligaVerwaltung.View
     partial class MenuForm
     {
         private object selectedElement;
+        public object SelectedElement { get => selectedElement; set => selectedElement = value; }
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private List<System.Windows.Forms.ToolStripMenuItem> menuItems= new List<System.Windows.Forms.ToolStripMenuItem>();
         public List<ToolStripMenuItem> MenuItems { get => menuItems; set => menuItems = value; }
-        public object SelectedElement { get => selectedElement; set => selectedElement = value; }
 
         public delegate String myMethodDelegate(int myInt);
         public void clicked(object sender, System.EventArgs e)
@@ -67,7 +67,8 @@ namespace BundesligaVerwaltung.View
             // 
             // menuStrip1
             // 
-            foreach(string option in this.Options)
+
+            foreach (string option in this.Options)
             {
                 this.AddItem(option);
 

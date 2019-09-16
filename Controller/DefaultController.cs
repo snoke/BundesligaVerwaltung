@@ -5,6 +5,8 @@ using BundesligaVerwaltung.Model.Entities;
 using BundesligaVerwaltung.View;
 using myEntityRepository;
 using System.Runtime.InteropServices;
+using myEntityRepository.DataStorage;
+
 namespace BundesligaVerwaltung.Controller
 {
     public class DefaultController
@@ -109,18 +111,21 @@ namespace BundesligaVerwaltung.Controller
             EntityTypes = new List<Type>()
             {
                  Type.GetType("BundesligaVerwaltung.Model.Entities.League") ,
-                  Type.GetType("BundesligaVerwaltung.Model.Entities.Role") ,
-                  Type.GetType("BundesligaVerwaltung.Model.Entities.Team"),
+                 Type.GetType("BundesligaVerwaltung.Model.Entities.Role") ,
+                 Type.GetType("BundesligaVerwaltung.Model.Entities.Team"),
                  Type.GetType("BundesligaVerwaltung.Model.Entities.Match") ,
                  Type.GetType("BundesligaVerwaltung.Model.Entities.Member") 
             };
-            Repository = new EntityRepository(EntityTypes, debug);
+            DataStorage dataStorage = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
+            //DataStorage dataStorage = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
+            //DataStorage dataStorage = new MysqlStrategy("localhost","test", "root", "", EntityTypes, debug);
+            //DataStorage dataStorage = new XmlStrategyPrototype();
+            Repository = new EntityRepository(EntityTypes, dataStorage, debug);
             this.DefaultMigration();
         }
         #endregion
 
         #region workers
-
     private void DefaultMigration()
         {
             if (false==Leagues.Any(x => x.Name == "Bundesliga"))
@@ -205,7 +210,7 @@ namespace BundesligaVerwaltung.Controller
         {
             try
             {
-                int choice = Terminal.Menu(new string[] { "Tabelle anzeigen", "Spielergebnis hinzufügen", "Team hinzufügen", "Team entfernen", "Mitglied hinzufügen", "Mitglied Teamwechsel", "Mitglied entfernen", "Programm beenden" }, "Bitte wählen");
+                int choice = Terminal.MainMenu(new string[] { "Tabelle anzeigen", "Spielergebnis hinzufügen", "Team hinzufügen", "Team entfernen", "Mitglied hinzufügen", "Mitglied Teamwechsel", "Mitglied entfernen", "Programm beenden" }, "Bitte wählen");
                 if (choice != 7)
                 {
                     if (choice == 0)
@@ -264,9 +269,7 @@ namespace BundesligaVerwaltung.Controller
                         if (Teams.Count() < League.MaximumTeams)
                         {
                             Repository.Save(new Team(null, Terminal.AskForString("Team Name"), League));
-                        }
-                        else
-                        {
+                        } else {
                             Terminal.Message("Maximal " + League.MaximumTeams + " Teams");
                         }
                     }

@@ -81,6 +81,25 @@ namespace BundesligaVerwaltung.View
             MenuForm f1 = new MenuForm(options);
             f1.ShowDialog();
             return options.ToList<string>().IndexOf(((System.Windows.Forms.ToolStripMenuItem)f1.SelectedElement).Name);
+            // return new SelectMenu.SelectMenu(options).setTitle(header).select();
+        }
+        public override  int MainMenu(string[] options, string header)
+        {
+            if (options.Length < 1)
+            {
+                throw new Exception.NoElementsException();
+            }
+            else { }
+            MainMenuForm f1 = new MainMenuForm(options);
+            f1.ShowDialog();
+            if ((System.Windows.Forms.ToolStripMenuItem)f1.SelectedElement==null)
+            {
+                return options.Length;
+            } else
+            {
+                return options.ToList<string>().IndexOf(((System.Windows.Forms.ToolStripMenuItem)f1.SelectedElement).Name);
+
+            }
            // return new SelectMenu.SelectMenu(options).setTitle(header).select();
         }
         public override int AskForInteger(string question)
@@ -105,7 +124,14 @@ namespace BundesligaVerwaltung.View
         }
         public override string AskForString(string question)
         {//
-            return Microsoft.VisualBasic.Interaction.InputBox(question, question, "", 0, 0);
+            string result = Microsoft.VisualBasic.Interaction.InputBox(question, question, "", 0, 0);
+            if (result.Trim().Length<1)
+            {
+                return this.AskForString(question);
+            } else
+            {
+                return result;
+            }
         }
         public override void SplashScreen()
         {
