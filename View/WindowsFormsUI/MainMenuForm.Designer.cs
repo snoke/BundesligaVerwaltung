@@ -6,7 +6,7 @@ namespace BundesligaVerwaltung.View
     partial class MainMenuForm
     {
         private object selectedElement;
-        public object SelectedElement { get => selectedElement; set => selectedElement = value; }
+        public object SelectedElement { get { return selectedElement; } set { selectedElement = value; } }
         /// <summary>
         /// Required designer variable.
         /// </summary>

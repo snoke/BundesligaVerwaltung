@@ -5,7 +5,7 @@ using BundesligaVerwaltung.Model.Entities;
 using BundesligaVerwaltung.View;
 using myEntityRepository;
 using System.Runtime.InteropServices;
-using myEntityRepository.DataStorage;
+using myEntityRepository.DataAccessObject;
 
 namespace BundesligaVerwaltung.Controller
 {
@@ -116,7 +116,7 @@ namespace BundesligaVerwaltung.Controller
                  Type.GetType("BundesligaVerwaltung.Model.Entities.Match") ,
                  Type.GetType("BundesligaVerwaltung.Model.Entities.Member") 
             };
-            DataStorage dataStorage = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
+            DataAccessObject dataStorage = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
             //DataStorage dataStorage = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
             //DataStorage dataStorage = new MysqlStrategy("localhost","test", "root", "", EntityTypes, debug);
             //DataStorage dataStorage = new XmlStrategyPrototype();
@@ -327,7 +327,6 @@ namespace BundesligaVerwaltung.Controller
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = null;
                         Repository.Save(member);
-
                     }
                     else
                     { }
@@ -338,6 +337,7 @@ namespace BundesligaVerwaltung.Controller
                     Repository.Flush();
                     if (debug)
                     {
+                        //wait a moment to view debug logs
                         System.Threading.Thread.Sleep(1000);
                     } else { }
                 }

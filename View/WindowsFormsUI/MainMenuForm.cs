@@ -18,6 +18,6 @@ namespace BundesligaVerwaltung.View
             InitializeComponent();
         }
 
-        public string[] Options { get => options; set => options = value; }
+        public string[] Options { get { return options; } set { options = value; } }
     }
 }
