@@ -21,7 +21,7 @@ namespace BundesligaVerwaltung.View
             {
                 foreach (string cell in row)
                 {
-                     tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+                    tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
                     tableLayoutPanel1.Controls.Add(new Label() { Text = cell }, i, 0);
                     i++;
                 }

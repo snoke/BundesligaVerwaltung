@@ -77,7 +77,7 @@ namespace BundesligaVerwaltung.View
 
             }
             this.tableLayoutPanel1.TabIndex = 0;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.TableLayoutPanel1_Paint);
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(TableLayoutPanel1_Paint);
             // 
             // menuStrip1
             // 

@@ -153,20 +153,11 @@ namespace BundesligaVerwaltung.Controller
         }
         private void Scoreboard()
         {
-           int choice = Terminal.Scoreboard(Matches, Teams);
+            int choice = Terminal.MainMenu(Matches, Teams, new string[] { "Tabelle anzeigen", "Spielergebnis hinzufügen", "Team hinzufügen", "Team entfernen", "Mitglied hinzufügen", "Mitglied Teamwechsel", "Mitglied entfernen", "Programm beenden" });
+
+           // int choice = Terminal.MainMenu(Matches, Teams, new string[] { "Spielergebnis hinzufügen", "Team hinzufügen", "Team entfernen", "Mitglied hinzufügen", "Mitglied Teamwechsel", "Mitglied entfernen", "Programm beenden" }, "Bitte wählen");
             if (choice==1)
             {
-                if (Repository.IsDirty()) //TODO: insert dirty joke here!
-                {
-                    switch (Terminal.Menu(new string[] { "Speichern", "Verwerfen" }, "Sie haben ungespeicherte Änderungen\nMöchten Sie diese Speichern oder Verwerfen?"))
-                    {
-                        case 0:
-                            Repository.Flush();
-                            break;
-                        default:
-                            break;
-                    }
-                }
                 Repository.Pull();
                 Scoreboard();
             } else {}
@@ -184,13 +175,23 @@ namespace BundesligaVerwaltung.Controller
         {
             try
             {
-                int choice = Terminal.MainMenu(new string[] { "Tabelle anzeigen", "Spielergebnis hinzufügen", "Team hinzufügen", "Team entfernen", "Mitglied hinzufügen", "Mitglied Teamwechsel", "Mitglied entfernen", "Programm beenden" }, "Bitte wählen");
+                int choice = terminal.MainMenu(Matches, Teams, new string[] { "Tabelle anzeigen", "Spielergebnis hinzufügen", "Team hinzufügen", "Team entfernen", "Mitglied hinzufügen", "Mitglied Teamwechsel", "Mitglied entfernen", "Programm beenden" });
                 if (choice != 7)
                 {
                     if (choice == 0)
                     {
-                        //Tabelle anzeigen
-                        Scoreboard();
+                        //Tabelle aktualisieren
+                        if (Repository.IsDirty()) //TODO: insert dirty joke here!
+                        {
+                            switch (Terminal.Menu(new string[] { "Speichern", "Verwerfen" }, "Sie haben ungespeicherte Änderungen\nMöchten Sie diese Speichern oder Verwerfen?"))
+                            {
+                                case 0:
+                                    Repository.Flush();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                         MainMenu();
                     }
                     else if (choice == 1)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace BundesligaVerwaltung.View
@@ -39,6 +40,49 @@ namespace BundesligaVerwaltung.View
         /// </summary>
         private void InitializeComponent()
         {
+
+            TableLayoutPanel tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+           // this.AutoSize(tableLayoutPanel1);
+            // no smaller than design time size
+            tableLayoutPanel1.MinimumSize = new System.Drawing.Size(this.Width, this.Height);
+
+            // no larger than screen size
+            tableLayoutPanel1.MaximumSize = new System.Drawing.Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetDouble;
+            tableLayoutPanel1.ColumnCount = 7;
+            int i = 0;
+            for (i = 0; i < tableLayoutPanel1.ColumnCount; i++)
+            {
+                tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+
+            }
+            tableLayoutPanel1.Location = new System.Drawing.Point(12, 48);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = Rows.Count;
+            for (i = 0; i < Rows.Count; i++)
+            {
+                tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+
+            }
+            tableLayoutPanel1.TabIndex = 0;
+            tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(TableLayoutPanel1_Paint);
+
+            i = 0;
+            int c = 0;
+            foreach (string[] row in Rows)
+            {
+                foreach (string cell in row)
+                {
+                    tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+                    tableLayoutPanel1.Controls.Add(new Label() { Text = cell }, i, 0);
+                    i++;
+                }
+                i++;
+            }
+            this.Controls.Add(tableLayoutPanel1);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
@@ -59,7 +103,7 @@ namespace BundesligaVerwaltung.View
 
             List<System.Windows.Forms.ToolStripMenuItem> opt = new List<System.Windows.Forms.ToolStripMenuItem>();
             List<System.Windows.Forms.ToolStripItem> ToolStrip = new List<System.Windows.Forms.ToolStripItem>();
-            int i = 0;
+            i = 0;
             foreach (string action in this.Options)
             {
                 System.Windows.Forms.ToolStripMenuItem element = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,6 +137,10 @@ namespace BundesligaVerwaltung.View
             this.ResumeLayout(false);
             this.PerformLayout();
 
+        }
+
+        private void TableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
         }
 
         #endregion

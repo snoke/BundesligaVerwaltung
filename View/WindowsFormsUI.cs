@@ -83,14 +83,29 @@ namespace BundesligaVerwaltung.View
             return options.ToList<string>().IndexOf(((System.Windows.Forms.ToolStripMenuItem)f1.SelectedElement).Name);
             // return new SelectMenu.SelectMenu(options).setTitle(header).select();
         }
-        public override  int MainMenu(string[] options, string header)
+        public override int MainMenu(List<Match> matches,List<Team> teams, string[] options)
         {
-            if (options.Length < 1)
+
+            List<string[]> rows = new List<string[]>();
+            foreach (Team team in teams)
+            {
+                rows.Add(new string[] {
+                    team.Name,
+                    matches.Where(x => (x.Opponent == team || x.Team == team)).Count().ToString(),
+                    matches.Where(x => (x.Opponent == team && x.OpponentScore > x.Score) || (x.Team == team && x.Score > x.OpponentScore)).Count().ToString(),
+                    matches.Where(x => (x.Opponent == team || x.Team == team) && x.Score == x.OpponentScore).Count().ToString(),
+                    matches.Where(x => (x.Opponent == team && x.OpponentScore < x.Score) || (x.Team == team && x.Score < x.OpponentScore)).Count().ToString(),
+                    (matches.Where(x => x.Opponent == team).Select(x => x.OpponentScore).Sum() + matches.Where(x => x.Team == team).Select(x => x.Score).Sum()).ToString(),
+                    (matches.Where(x => (x.Opponent == team && x.OpponentScore > x.Score) || (x.Team == team && x.Score > x.OpponentScore)).Count()*3+matches.Where(x => (x.Opponent == team || x.Team == team) && x.Score == x.OpponentScore).Count()).ToString(),
+                });
+            }
+
+                if (options.Length < 1)
             {
                 throw new Exception.NoElementsException();
             }
             else { }
-            MainMenuForm f1 = new MainMenuForm(options);
+            MainMenuForm f1 = new MainMenuForm(rows, options);
             f1.ShowDialog();
             if ((System.Windows.Forms.ToolStripMenuItem)f1.SelectedElement==null)
             {
