@@ -116,18 +116,18 @@ namespace BundesligaVerwaltung.Controller
                  Type.GetType("BundesligaVerwaltung.Model.Entities.Match") ,
                  Type.GetType("BundesligaVerwaltung.Model.Entities.Member") 
             };
-            DataAccessObject dataStorage = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
+            DataAccessObject dataAccessObject = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
             //DataStorage dataStorage = new SQLiteStrategy("db.sqlite", EntityTypes, debug);
             //DataStorage dataStorage = new MysqlStrategy("localhost","test", "root", "", EntityTypes, debug);
             //DataStorage dataStorage = new XmlStrategyPrototype();
-            Repository = new EntityRepository(EntityTypes, dataStorage, debug);
+            Repository = new EntityRepository(EntityTypes, dataAccessObject, debug);
             this.DefaultMigration();
         }
         #endregion
 
         #region workers
-    private void DefaultMigration()
-        {
+        private void DefaultMigration()
+            {
             if (false==Leagues.Any(x => x.Name == "Bundesliga"))
             {
                 Repository.Save(new League((int?)null,"Bundesliga",18));
@@ -148,9 +148,7 @@ namespace BundesligaVerwaltung.Controller
             if (false == Roles.Any(x => x.Name == "Spieler"))
             {
                 Repository.Save(new Role((int?)null, "Spieler"));
-            }
-            else { }
-
+            } else { }
             Repository.Flush();
         }
         private void Scoreboard()
@@ -172,30 +170,6 @@ namespace BundesligaVerwaltung.Controller
                 Repository.Pull();
                 Scoreboard();
             } else {}
-            /*
-            if (0 == Terminal.Menu(
-                new string[] { "Tabelle aktualisieren", "zurück zum Hauptmenü" },
-                Terminal.Scoreboard(Matches, Teams) + "\nBitte wählen"))
-            {
-                if (Repository.IsDirty())
-                {
-                    switch (Terminal.Menu(new string[] { "Speichern", "Verwerfen" }, "Sie haben ungespeicherte Änderungen\nMöchten Sie diese Speichern oder Verwerfen?"))
-                    {
-                        case 0:
-                            Repository.Flush();
-                            break;
-                        default:
-                            break;
-                    }
-                } else
-                {
-
-                }
-                Repository.Pull();
-                Scoreboard();
-            }
-            else { }
-            */
         }
         public void Run()
         {
@@ -217,6 +191,7 @@ namespace BundesligaVerwaltung.Controller
                     {
                         //Tabelle anzeigen
                         Scoreboard();
+                        MainMenu();
                     }
                     else if (choice == 1)
                     {
@@ -262,6 +237,7 @@ namespace BundesligaVerwaltung.Controller
                             Terminal.AskForInteger("Gegentore Tore eingeben")
                         );
                         Repository.Save(match);
+                        MainMenu();
                     }
                     else if (choice == 2)
                     {
@@ -272,6 +248,7 @@ namespace BundesligaVerwaltung.Controller
                         } else {
                             Terminal.Message("Maximal " + League.MaximumTeams + " Teams");
                         }
+                        MainMenu();
                     }
                     else if (choice == 3)
                     {
@@ -283,6 +260,7 @@ namespace BundesligaVerwaltung.Controller
                         Team team = Teams[Terminal.Menu(Teams.Select(i => i.Name).ToArray(), "Team löschen")];
                         team.League = null;
                         Repository.Save(team);
+                        MainMenu();
                     }
                     else if (choice == 4)
                     {
@@ -299,6 +277,7 @@ namespace BundesligaVerwaltung.Controller
                                 Teams[Terminal.Menu(Teams.Select(x => x.Name).ToArray(), "Bitte Team wählen")],
                                 Roles[Terminal.Menu(Roles.Select(x => x.Name).ToArray(), "Bitte Rolle wählen")])
                             );
+                        MainMenu();
                     }
                     else if (choice == 5)
                     {
@@ -313,6 +292,7 @@ namespace BundesligaVerwaltung.Controller
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = Teams.Where(x => x != member.Team).ToArray()[Terminal.Menu(Teams.Where(x => x != member.Team).Select(x => x.Name).ToArray(), "Bitte wählen")];
                         Repository.Save(member);
+                        MainMenu();
                     }
                     else if (choice == 6)
                     {
@@ -322,27 +302,26 @@ namespace BundesligaVerwaltung.Controller
                             throw new Exception.NoElementsException();
                         }
                         else { }
+
                         Team team = Teams[Terminal.Menu(Teams.Select(x => x.Name).ToArray(), "Bitte wählen")];
                         List<Member> teamMembers = Members.Where(x => x.Team == team).ToList();
                         Member member = teamMembers[Terminal.Menu(teamMembers.Select(x => " [" + x.Role.Name + "] " + x.Name).ToArray(), "Bitte wählen")];
                         member.Team = null;
                         Repository.Save(member);
+                        MainMenu();
                     }
                     else
                     { }
-                    MainMenu();
                 }
                 else
                 {
                     Repository.Flush();
-                    if (debug)
-                    {
+                    if (debug) {
                         //wait a moment to view debug logs
                         System.Threading.Thread.Sleep(1000);
                     } else { }
                 }
-            }
-            catch (Exception.NoElementsException)
+            } catch (Exception.NoElementsException)
             {
                 Terminal.Message("Fehler\n Die Liste ist leer!");
                 MainMenu();
