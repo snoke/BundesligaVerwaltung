@@ -1,6 +1,6 @@
 # BundesligaVerwaltung
 
-A League/Scoreboard Administration Tool with GUI using WindowsForms writting in C#
+A League Scoreboard Administration Tool with GUI using WindowsForms writting in C#
 
 ## Dependencies:
 
